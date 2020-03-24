@@ -1,0 +1,258 @@
+@import url('https://fonts.googleapis.com/css?family=Abel');
+
+.card{
+  font-family: Abel, Arial, Verdana, sans-serif;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+}
+
+.card {
+  width: 450px;
+  height: 250px;
+  background-color: #fff;
+  background: linear-gradient(#f8f8f8, #fff);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  margin: 0.5rem;
+  float: left;
+}
+
+.card h1 {
+  text-align: center;
+}
+
+.card .additional {
+  position: absolute;
+  width: 150px;
+  height: 100%;
+  transition: width 0.4s;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.card:hover .additional {
+  width: 100%;
+  border-radius: 0 5px 5px 0;
+}
+
+.card .additional .user-card {
+  width: 150px;
+  height: 100%;
+  position: relative;
+  float: left;
+}
+
+.card .additional .user-card::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 10%;
+  right: -2px;
+  height: 80%;
+  border-left: 3px solid rgba(0,0,0,0.025);
+}
+
+.card .additional .user-card .participant-type,
+.card .additional .user-card .year-type {
+  top: 15%;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 0.75em;
+  font-weight: bold; 
+  background: rgba(0,0,0,0.15);
+  padding: 0.125rem 0.75rem;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+.card .additional .user-card .year-type {
+  top: 85%;
+}
+
+.card .additional .user-card svg {
+  top: 50%;
+}
+
+.card .additional .hover-info {
+  width: 300px;
+  float: left;
+  position: absolute;
+  left: 150px;
+  height: 100%;
+}
+
+.card .additional .hover-info h1 {
+  color: #fff;
+  margin-bottom: 0;
+}
+
+.card.cse .additional .stats {
+  color: #401B1A;
+}
+
+.card.cse .additional {
+  background: #FF5F5C;
+}
+
+.card.cse .additional .hover-info h1 {
+  color: #401B1A;
+}
+
+.card.cse .additional .coords {
+  color: #401B1A;
+}
+
+.card.ece .additional .stats {
+  color: #222540;
+}
+
+.card.ece .additional {
+  background: #8793FF;
+}
+
+.card.ece .additional .hover-info h1 {
+  color: #222540;
+}
+
+.card.ece .additional .coords {
+  color: #222540;
+}
+
+.card.eee .additional .stats {
+  color: #403A1B;
+}
+
+.card.eee .additional {
+  background: #FFE66D;
+}
+
+.card.eee .additional .hover-info h1 {
+  color: #403A1B;
+}
+
+.card.eee .additional .coords {
+  color: #403A1B;
+}
+
+.card.mech .additional .stats {
+  color: #2E203D;
+}
+
+.card.mech .additional {
+  background: #BC85FA;
+}
+
+.card.mech .additional .hover-info h1 {
+  color: #2E203D;
+}
+
+.card.mech .additional .coords {
+  color: #2E203D;
+}
+
+.card.civil .additional .stats {
+  color: #1F3D1E;
+}
+
+.card.civil .additional {
+  background: #72E06E;
+}
+
+.card.civil .additional .hover-info h1 {
+  color: #1F3D1E;
+}
+
+.card.civil .additional .coords {
+  color: #1F3D1E;
+}
+
+.card.it .additional .stats {
+  color: #193D3D;
+}
+
+.card.it .additional {
+  background: #5CE0E0;
+}
+
+.card.it .additional .hover-info h1 {
+  color: #193D3D;
+}
+
+.card.it .additional .coords {
+  color: #193D3D;
+}
+
+
+.card .additional .coords {
+  /* do not remove margin */
+  margin: 0 1rem; 
+  color: #fff;
+  font-size: 1rem;
+}
+
+.card .additional .coords span + span {
+  float: right;
+}
+
+.card .additional .stats {
+  font-size: 2rem;
+  display: flex;
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  top: auto;
+  color: #fff;
+}
+
+.card .additional .stats > div {
+  flex: 1;
+  text-align: center;
+}
+
+.card .additional .stats i {
+  display: block;
+}
+
+.card .additional .stats div.title {
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.card .additional .stats div.value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.5rem;
+  margin-top: 6px;
+}
+
+.card .additional .stats div.value.infinity {
+  font-size: 2.5rem;
+}
+
+.card .general {
+  width: 300px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  box-sizing: border-box;
+  padding: 1rem;
+  padding-top: 0;
+}
+
+.card .general .more {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: 0.9em;
+}

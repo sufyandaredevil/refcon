@@ -1,0 +1,45 @@
+<%- include("navbaronly"); -%>
+
+<title>
+    REFCON - Payment Table
+</title>
+
+<div class="container">
+    
+    <center>
+        <h5 style="margin-top: 40px;"> 
+            <%= department %> <%= year %> year, Semester <%= semesterNumber %>, Paper Details
+        </h5> 
+    </center>
+    
+    <div class='main' style="margin-top: 10px;">
+    
+        <form action="examfeetable" method="POST">
+
+            <table style="margin: auto; max-width: 100%;" class="table table-hover table-bordered" >
+                <input type="hidden" name="id" value="<%= id %>">
+                <thead>
+                    <tr>
+                        <th>Roll Number</th>
+                        <th>Number of Subjects in Current Semester</th>
+                        <th>Number of Arrears</th>
+                    </tr>
+                </thead>
+        
+                <tbody>
+                    <% for(var i=0; i < rollNumbers.length; i++){ %>
+                    <tr>
+                        <td> <%= rollNumbers[i]  %> </td>
+                        <td> <%= currentSemesterSubjectCount %> </td>
+                        <td onkeypress="return event.key != 'Enter';" onkeyup="return event.key != 'Enter';" onkeydown="return event.key != 'Enter';"> <input maxlength="3" class="form-control" name="arrearCount" required> </td>
+                    </tr>
+                    <% } %>
+                </tbody>
+
+            </table>
+            <button style="margin-top: 10px;" class="btn btn-primary" type="submit">Submit Marks</button>
+        </form>
+    
+    </div>
+
+</div>

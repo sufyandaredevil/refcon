@@ -1,0 +1,99 @@
+<%- include("navbaronly"); -%>
+
+<title>
+    REFCON - Internal Marks
+</title>
+
+<style>
+    font{
+        color: #e92843;
+    }
+</style>
+
+<div class="container">
+
+    <% if(data.length != 0){%>
+
+    <% if(type === 'teacher'){ %>
+
+    <div class="text-right">
+        <a href="/internalmarkspace" style="margin-top: 10px;margin-bottom: 10px; font-size: large; color: white;" class="btn btn-primary">Create
+            Mark Space</a>
+    </div>
+
+    <% for(var i=(data.length-1); i >= 0; i--){ %>
+    <div title="Department: <%= data[i].department %>&#010;Year: <%= data[i].year %>&#010;Semester: <%= data[i].semester %>&#010;Subject : <%= data[i].subjectName %>&#010;Internal: <%= data[i].internalNumber %>" class="alert alert-info">
+        <div style="font-weight: bold;"><font><%= data[i].department %></font> <font><%= data[i].year %></font> year, Semester
+            <font><%= data[i].semester %></font>, <font><%= data[i].subjectName %></font> Internal No. <font><%= data[i].internalNumber %></font> Marks: <a
+                class="btn btn-outline-danger" style="margin-bottom: 5px;" href="/internaldelete/<%= data[i]._id %>" role="button">Delete</a></div>
+
+        <table style="margin: auto; max-width: 100%;" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Roll Number</th>
+                    <th>Marks Obtained</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% for(var j=0; j < data[i].rollNumbers.length; j++){ %>
+                <tr>
+                    <td> <%= data[i].rollNumbers[j] %> </td>
+                    <td> <%= data[i].marks[j] %> </td>
+                </tr>
+                <% } %>
+            </tbody>
+
+        </table>
+    </div>
+    <div class="forspacing" style="margin-top: 30px;"></div>
+    <% } %>
+    <% } else if(type ==='student'){ %>
+
+    <% for(var i=internalNumbers.length-1; i >= 0; i--){ %>
+<div class="alert alert-info" style="margin-top: 15px;" >
+        <div style="font-weight: bold;">Internal No. <%= data[i].internalNumber %> Marks:</div>
+
+    <table style="margin: auto; max-width: 100%;" class="table table-bordered table-hover">
+        <thead>
+            <th>Subject Code</th>
+            <th>Subject Name</th>
+            <th>Marks Obtained</th>
+        </thead>
+
+        <% for(var j=0; j < data.length; j++){ if(data[j].internalNumber === internalNumbers[i]){%>
+
+        <tr>
+            <td><%= data[j].subjectCode %></td>
+            <td><%= data[j].subjectName %></td>
+            <td><%= data[j].mark %></td>
+        </tr>
+
+        <% }} %>
+
+    </table>
+</div>
+    <% } %>
+
+    <% } %>
+
+
+    <% } else if(type === 'teacher'){ %>
+
+    <div class="text-right">
+        <a href="/internalmarkspace" style="margin-bottom: 10px; margin-top: 10px; font-size: large; color: white;" class="btn btn-primary">Create
+            Mark Space</a>
+    </div>
+
+    <div class="alert alert-info">
+        <h5>No Mark Space Created</h5>
+    </div>
+    <% } else if(type === 'student'){ %>
+    <div class="alert alert-info" style="margin-top: 30px;">
+        <h5>No Internal Marks has been posted </h5>
+    </div>
+    <%}%>
+
+    
+
+</div>

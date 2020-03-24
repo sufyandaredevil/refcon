@@ -1,0 +1,68 @@
+<%- include("adminheader"); -%>
+
+<title>
+    REFCON - ADMIN Account Settings
+</title>
+
+<style>
+    .box {
+        display: none;
+    }
+
+    .form-signin {
+        width: 100%;
+        max-width: 450px;
+        padding: 15px;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $("select").change(function () {
+            $(this).find("option:selected").each(function () {
+                var optionValue = $(this).attr("value");
+                if (optionValue) {
+                    $(".box").not("." + optionValue).hide();
+                    $("." + optionValue).show();
+                } else {
+                    $(".box").hide();
+                }
+            });
+        }).change();
+    });
+</script>
+
+<div class="container">
+    <form class="form-signin" action="/adminaccountsettings" method="POST">
+
+        <%if(typerror != "") {%>
+        <div class="alert alert-danger"><%= typerror %></div>
+        <%}%>
+            <%if(success != "") {%>
+        <div class="alert alert-success"><%= success %></div>
+        <%}%>                    
+
+        <select class="form-control" name="type" required>
+            <option value="none">Which field you want to change?</option>
+            <option value="name">Change Name</option>
+            <option value="password">Change Password</option>
+            <option value="phoneNumber">Change Phone Number</option>
+        </select>
+
+        <div class="name box">
+            <input type="text" name="fullName" class="form-control" placeholder="Enter your Full Name">
+        </div>
+
+        <div class="phoneNumber box">
+            <input type="text" name="phoneNumber" class="form-control" placeholder="Enter your Phone Number">
+        </div>
+
+        <div class="password box">
+            <input type="password" name="currentPassword" class="form-control" placeholder="Enter your Current Password">
+            <input type="password" name="newPassword" class="form-control" placeholder="Enter your New Password">
+        </div>
+
+        <button type="submit" style="margin-top: 10px;" class="btn btn-lg btn-primary btn-block">Submit</button>
+
+    </form>
+</div>

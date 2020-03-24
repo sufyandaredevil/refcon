@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>REFCON</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link href="../../css/login.css" rel="stylesheet">
+  <link rel="icon" href="../imgs/refcon.svg" type="image/svg">
+
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+  <style>
+    .box {
+      display: none;
+    }
+  </style>
+
+  <script>
+    $(document).ready(function () {
+      $("select").change(function () {
+        $(this).find("option:selected").each(function () {
+          var optionValue = $(this).attr("value");
+          if (optionValue) {
+            $(".box").not("." + optionValue).hide();
+            $("." + optionValue).show();
+          } else {
+            $(".box").hide();
+          }
+        });
+      }).change();
+    });
+  </script>
+
+</head>
+
+<body class="text-center">
+
+  <form class="form-signin" action="/register" method="POST">
+
+    <img class="mb-4" src="../../imgs/refcon.svg" alt="" width="125" height="125">
+
+    <h1 class="h3 mb-3 font-weight-normal">Enter your details below</h1>
+
+    <%if(typerror != "") {%>
+    <div class="alert alert-danger"><%= typerror %></div>
+    <%}%>
+
+    <select class="form-control" name="type" required>
+      <option>Who are you ?</option>
+      <option value="student">Student</option>
+      <option value="teacher">Teacher</option>
+    </select>
+
+    <input type="text" name="fullName" class="form-control" placeholder="Full Name" required="">
+
+    <input type="text" name="phoneNumber" maxlength="10" class="form-control" placeholder="Phone Number" required="">
+
+    <input type="text" name="collegeName" class="form-control" placeholder="College Name" required="">
+
+    <div class="student box">
+      <input type="text" name="rollNumber" class="form-control" placeholder="Student Roll Number">
+      <input type="text" name="department" class="form-control" placeholder="Department">
+      <input type="text" name="year" maxlength="1" class="form-control" placeholder="Year">
+    </div>
+    <div class="teacher box">
+      <input type="text" name="facultyid" class="form-control" placeholder="Faculty ID">
+    </div>
+
+
+    <input type="email" name="email" class="form-control" placeholder="Email address" required="">
+    <input type="password" name="password" class="form-control" placeholder="Password" required="">
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Create Account</button>
+
+  </form>
+
+</body>
+
+</html>

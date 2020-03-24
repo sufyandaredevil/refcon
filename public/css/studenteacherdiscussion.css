@@ -1,0 +1,35 @@
+.pxc-subcard {
+	transition: all 600ms ease;
+	border-radius: 15px;
+	background: #387bfe;
+	width: 100%;
+	z-index: 0;
+	padding: 15px 25px 15px 40px;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 5px;
+}
+
+.pxc-title {
+	font-size: 24px;
+	margin-bottom: 4px;
+	color: white;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	flex: 0 0 auto;
+}
+
+.pxc-content {
+	font-size: 13px;
+	color: white;
+}
+
+.unclick{
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}

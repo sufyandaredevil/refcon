@@ -1,0 +1,90 @@
+<%- include("adminheader"); -%>
+
+<title>REFCON - ADMIN User Reports</title>
+
+<link rel="stylesheet" href="../css/studenteacherdiscussion.css">
+
+<script>
+
+function loadthisup(nameselect) {
+      if (nameselect.value === 'teacher') {
+        for (let el of document.querySelectorAll('.student')) el.style.display = 'none';
+        for (let el of document.querySelectorAll('.teacher')) el.style.display = 'block';
+      } else if (nameselect.value === 'student') {
+        for (let el of document.querySelectorAll('.student')) el.style.display = 'block';
+        for (let el of document.querySelectorAll('.teacher')) el.style.display = 'none';
+      } else if (nameselect.value === 'everyone') {
+        for (let el of document.querySelectorAll('.student')) el.style.display = 'block';
+        for (let el of document.querySelectorAll('.teacher')) el.style.display = 'block';
+      }
+    }
+
+</script>
+
+<div class="container">
+
+    <div style="margin-top: 30px;"></div>
+
+    <% if(data.length !=0){ %>
+    <select class="form-control" id="tos" name="tos" style="margin-bottom: 15px;" onchange="loadthisup(this);">
+        <option value="everyone">Show all User Reports</option>
+        <option value="teacher">Show Teacher's Reports</option>
+        <option value="student">Show Student's Reports</option>
+    </select>
+
+    <% for(var i=data.length-1; i>=0; i--) {%>
+
+    <div onclick="location.href='/adminreport/<%= data[i]._id %>'" class="<%= data[i].fromType %> pxc-subcard unclick"
+        onmouseover="this.style.background='#2f6cda';" onmouseout="this.style.background='#387bfe'">
+        <div title="Report Type: <%= data[i].reportType.toUpperCase() %>" class="pxc-title">
+            <% if(data[i].reportType === 'bug'){%> <i class="fa fa-bug"></i> <% } else{ %><i class="fa fa-i-cursor"></i>
+            <% } %> <%= data[i].reportTitle %> </div>
+        <div style="word-wrap: break-word;" class="pxc-content">
+            <%= data[i].report %>
+        </div>
+        <div>
+            <div style="margin-top: 5px;">
+                <%= "Sent on " + data[i].date%>
+            </div>
+            <% if(data[i].answer === undefined){ %>
+            <div style="color: #76212a;" class="text-right">
+                Not resolved
+            </div>
+            <% } else{%>
+            <div class="text-right">
+                <%= "Current Status : " + data[i].answer%>
+            </div>
+            <% } %>
+        </div>
+    </div>
+
+    <% } %>
+
+
+    <% } else{%>
+
+    <div class="alert alert-info" style="margin-top: 30px;">
+        <h5>No reports posted </h5>
+    </div>
+
+    <% } %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>

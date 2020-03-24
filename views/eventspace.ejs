@@ -1,0 +1,59 @@
+<%- include("navbaronly"); -%>
+
+<title>
+    REFCON - New Message
+</title>
+
+<body>
+    <div class="container" style="margin-top: 30px;">
+
+        <a style="margin-bottom: 20px;" href="/event" class="btn btn-outline-primary" role="button"><i class="fa fa-arrow-left"></i></a>
+
+        <form action="/eventspace" method="POST">
+            <h5>New Event</h5>
+            <input class="form-control" autofocus required type="text" name="eventName" placeholder="Event Name">
+            <textarea class="form-control" required name="eventDescription" placeholder="Event Description" rows="4"></textarea>
+            <input class="form-control" required type="text" maxlength="3" name="fee" placeholder="Registration Fee">
+            <input class="form-control" required type="text" maxlength="1" name="prizes" placeholder="No. of Credit Distribution">
+            <input class="form-control" required maxlength="15" type="text" name="venue" placeholder="Venue">
+
+            <div style="margin-top: 9px;"></div>
+            <label> Participant Type: </label> &nbsp;
+            <input checked type="radio" name="participantType" value="CSE">
+            <label>CSE</label>
+            <input type="radio" name="participantType" value="IT">
+            <label>IT</label>
+            <input type="radio" name="participantType" value="CIVIL">
+            <label>CIVIL</label>
+            <input type="radio" name="participantType" value="EEE">
+            <label>EEE</label>
+            <input type="radio" name="participantType" value="ECE">
+            <label>ECE</label>
+            <input type="radio" name="participantType" value="MECH">
+            <label>MECH</label>
+
+            <div></div>
+            <label> Year Type: </label> &nbsp;
+            <input checked type="checkbox" name="yearType" value="I">
+            <label> I year </label> &nbsp;
+            <input checked type="checkbox" name="yearType" value="II">
+            <label> II year </label>&nbsp;
+            <input checked type="checkbox" name="yearType" value="III">
+            <label> III year</label>&nbsp;
+            <input checked type="checkbox" name="yearType" value="IV">
+            <label> IV year </label>&nbsp;
+
+            <div></div>
+            <label for="vehicle1"> Event's Starting Date & Time: </label> &nbsp;
+            <input type="date" name="date" required>
+            <input type="time" name="time" required>
+
+            <div>
+                <button style="margin-top: 7px;" class="btn btn-primary" type="submit"> Create Event</button>
+            </div>
+            
+        </form>
+
+    </div>
+
+</body>

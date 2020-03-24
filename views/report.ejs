@@ -1,0 +1,101 @@
+<%- include("navbaronly"); -%>
+
+<title>
+  REFCON - Report Bugs & Changes
+</title>
+
+<link rel="stylesheet" href="../css/studenteacherdiscussion.css">
+
+<div class="container">
+
+    <div class="text-right">
+        <a href="/reportspace" style="margin-top: 10px; margin-bottom: 10px; font-size: large; color: white;" class="btn btn-primary">Send a report</a>
+    </div>
+
+
+    <% if(data.length !=0){ %>
+
+        <% for(var i=data.length-1; i>=0; i--) {%>
+
+            <% if(data[i].fromId === id) {%>
+
+                <div onclick="location.href='/report/<%= data[i]._id %>'" class="pxc-subcard unclick" onmouseover="this.style.background='#2f6cda';" onmouseout="this.style.background='#387bfe'">
+                    <div title="Report Type: <%= data[i].reportType.toUpperCase() %>" class="pxc-title"> <% if(data[i].reportType === 'bug'){%> <i class="fa fa-bug"></i> <% } else{ %><i class="fa fa-i-cursor"></i> <% } %> <%= data[i].reportTitle %> </div>
+                    <div style="word-wrap: break-word;" class="pxc-content">
+                        <%= data[i].report %>
+                    </div>
+                    <div>
+                        <div style="margin-top: 5px;"> 
+                            <%= "Sent on " + data[i].date%> 
+                        </div>
+                        <% if(data[i].answer === undefined){ %>
+                        <div style="color: #76212a;" class="text-right" title="Delete(no reply posted)">
+                             Not resolved <a style="margin-bottom: 5px;" class="btn btn-danger" href="/reportdelete/<%= data[i]._id %>"><i class="fa fa-trash"></i></a>
+                        </div>
+                        <% } else{%>
+                            <div class="text-right" title="Delete(reply posted)"><%= "Status: " + data[i].answer%> <a style="margin-bottom: 5px;" class="btn btn-dark" href="/reportdelete/<%= data[i]._id %>"><i class="fa fa-trash"></i></a>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+
+            <% } %>
+
+        <% } %>
+
+        <% for(var i=data.length-1; i>=0; i--) {%>
+
+            <% if(data[i].fromId != id) {%>
+
+                <div onclick="location.href='/report/<%= data[i]._id %>'" class="pxc-subcard unclick" onmouseover="this.style.background='#2f6cda';" onmouseout="this.style.background='#387bfe'">
+                    <div title="Report Type: <%= data[i].reportType.toUpperCase() %>" class="pxc-title"> <% if(data[i].reportType === 'bug'){%> <i class="fa fa-bug"></i> <% } else{ %><i class="fa fa-i-cursor"></i> <% } %> <%= data[i].reportTitle %> </div>
+                    <div style="word-wrap: break-word;" class="pxc-content">
+                        <%= data[i].report %>
+                    </div>
+                    <div>
+                        <div style="margin-top: 5px;"> 
+                            <%= "Sent by ID: "+ data[i].fromId +" on " + data[i].date%> 
+                        </div>
+                        <% if(data[i].answer === undefined){ %>
+                        <div style="color: #76212a;" class="text-right">
+                             Not resolved
+                        </div>
+                        <% } else{%>
+                            <div class="text-right" title="Delete(reply posted)">
+                                <%= "Status: " + data[i].answer%>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+
+            <% } %>
+
+        <% } %>
+
+        <% } else{%>
+
+            <div class="alert alert-info">
+                <h5>No reports posted </h5>
+              </div>
+
+        <% } %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>

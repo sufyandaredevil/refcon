@@ -1,0 +1,197 @@
+<%- include("navbaronly"); -%>
+
+<title>
+    REFCON - Exam Fee
+</title>
+
+<style>
+    #paid {
+        background-color: #ceeeda;
+    }
+
+    #paid:hover {
+        background-color: #bae7cb;
+    }
+
+    #notpaid {
+        background-color: #ffd6da;
+    }
+
+    #notpaid:hover {
+        background-color: #fec5cb;
+    }
+
+    /* th {
+        width: 10%;
+        word-wrap: break-word;
+    } */
+
+    .unclick {
+        user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
+    }
+</style>
+
+<div class="container">
+
+
+    <% if(type === 'teacher'){ %>
+
+    <% if(data.length !=0) { %>
+    <div class="text-right" style="margin-bottom: 10px;">
+        <a href="/examfeespace" style="margin-top: 10px; font-size: large; color: white;" class="btn btn-primary">Create
+            Payment Space</a>
+    </div>
+
+    <% for(var i=(data.length-1); i >= 0; i--){ %>
+        <% var paid = 0;var notpaid = 0; for(var n=0; n<data[i].isPaid.length; n++){if(data[i].isPaid[n] === "Paid"){paid++;}else{notpaid++;}}%>
+    <div title="Department: <%= data[i].department %>&#010;Year: <%= data[i].year %>&#010;Semester: <%= data[i].semesterNumber %>" class="alert alert-info">
+        <div style="font-weight: bold; margin-top: 20px;">
+            <div><font style="color: #e92843;"><%= data[i].department %></font> <font style="color: #e92843;"><%= data[i].year %></font> year, Semester <font style="color: #e92843;"><%= data[i].semesterNumber %></font>, Exam Fee Payment Status:</div>
+
+            <div>
+                No. of students <font style="color: #245823;">Paid</font> & <font style="color: #7d1523;">Not Paid</font>: <font style="color: #245823;"><%= paid %></font> & <font style="color: #7d1523;"><%= notpaid %></font> out of <font style="font-weight: bold;"><%= data[i].rollNumbers.length %></font>
+            </div>
+
+            <% if(data[i].isPaid.includes("")){ %>
+            <a class="btn btn-outline-primary" style="margin-bottom: 5px; margin-top: 5px;" href="/notify/<%= data[i]._id %>"
+                role="button">Notify</a>
+            <% } %>
+
+            <a class="btn btn-outline-danger" style="margin-bottom: 5px; margin-top: 5px;" href="/examfeedelete/<%= data[i]._id %>"
+                role="button">Delete</a>
+            </div>
+
+        <table style=" margin: auto; max-width: 100%;" class="table table-bordered table-hover">
+            <thead>
+                <tr style="width: 10%; word-wrap: break-word;">
+                    <th>Roll Number</th>
+                    <th>Total Subjects</th>
+                    <th>Fee</th>
+                    <th>✔/✕</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% for(var j=0; j < data[i].rollNumbers.length; j++){ %>
+                <% if( data[i].isPaid[j] === "" ){ %>
+                <tr id="notpaid">
+                    <td> <%= data[i].rollNumbers[j] %> </td>
+                    <td> <%= data[i].currentSemesterSubjectCount %>+<%= data[i].arrearCount[j] %>= <%=parseInt(data[i].currentSemesterSubjectCount)+parseInt(data[i].arrearCount[j])%></td>
+                    <td> ₹<%= (parseInt(data[i].currentSemesterSubjectCount)+parseInt(data[i].arrearCount[j]))*Number(150) %>
+                    </td>
+                    <td>
+                        <font style="color: #7d1523;">Not Paid</font>
+                    </td>
+                </tr>
+                <% } else{%>
+                <tr id="paid">
+                    <td> <%= data[i].rollNumbers[j] %> </td>
+                    <td> <%= data[i].currentSemesterSubjectCount %>+<%= data[i].arrearCount[j] %>= <%=parseInt(data[i].currentSemesterSubjectCount)+parseInt(data[i].arrearCount[j])%></td>
+                    <td> ₹<%= (parseInt(data[i].currentSemesterSubjectCount)+parseInt(data[i].arrearCount[j]))*Number(150) %>
+                    </td>
+                    <td>
+                        <font style="color: #005823;">Paid</font>
+                    </td>
+                </tr>
+                <% } %>
+                <% } %>
+            </tbody>
+
+        </table>
+    </div>
+    <div class="forspacing" style="margin-top: 30px;"></div>
+    <% } %>
+    <% } else{ %>
+    <div class="text-right">
+        <a href="/examfeespace" style="margin-bottom: 10px; margin-top: 10px; font-size: large; color: white;" class="btn btn-primary">Create
+            Payment Space</a>
+    </div>
+
+    <div class="alert alert-info">
+        <h5>No Payment Space Created</h5>
+    </div>
+    <% } %>
+
+    <% } else if(type ==='student'){ %>
+    <% if(data){ %>
+
+    <div style="margin-top: 10px; float: left;"
+        class="unclick card alert <% if(isPaid === 'Paid'){ %> alert-success <% } else{ %> alert-danger <% } %>"
+        style="width: 18%;">
+        <div class="card-body">
+            <div>
+                <font style="font-size: large;"><strong><%= data.department %> <%= data.year %> year, Semester
+                        <%= data.semesterNumber %>, Exam Fee Details:</strong></font>
+            </div>
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <td>
+                        <font style="font-size: x-large;">No. of Subjects in Current Semester:</font>
+                    </td>
+                    <td>
+                        <font style="font-size: x-large;"><strong><%= data.currentSemesterSubjectCount %></strong>
+                        </font>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <font style="font-size: x-large;">No. of Arrears:</font>
+                    </td>
+                    <td>
+                        <font style="font-size: x-large;"><strong><%= arrearCount %></strong></font>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <font style="font-size: x-large;">Total Exam Fee:
+                            <%= " (" + data.currentSemesterSubjectCount + "+" +arrearCount + ") x 150" %></font>
+                    </td>
+                    <td>
+                        <font style="font-size: x-large;"> ₹
+                            <strong><%= String((parseInt(arrearCount)+parseInt(data.currentSemesterSubjectCount))*150) %>
+                        </font></strong>
+                    </td>
+                </tr>
+
+                <% if(isPaid === "Paid"){ %>
+                <tr>
+                    <td>
+                        <font style="font-size: x-large;">Payment Status</font>
+                    </td>
+                    <td>
+                        <font style="font-size: x-large;"><strong>Paid</strong></font>
+                    </td>
+                </tr>
+                <% } else{%>
+                <tr>
+                    <td>
+                        <font style="font-size: x-large;">Payment Status</font>
+                    </td>
+                    <td>
+                        <font style="font-size: x-large;"><strong>Not Paid</strong></font>
+                    </td>
+                </tr>
+            </table>
+            <form action="/examfeepayment" method="POST">
+                <input type="hidden" name="id" value="<%= data._id %>">
+                <input type="hidden" name="amount" value="<%= fee %>">
+                <button type="submit" style="float: right; margin-top: 15px;"
+                    class="text-right btn btn-lg btn-outline-info">Pay Now</button>
+            </form>
+            <% } %>
+        </div>
+    </div>
+
+    <% } else{ %>
+    <div class="alert alert-info" style="margin-top: 30px;">
+        <h5>No Exam Fee info. has been posted</h5>
+    </div>
+    <% } %>
+
+    <% } %>
+
+</div>

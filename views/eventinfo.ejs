@@ -1,0 +1,70 @@
+<%- include("navbaronly"); -%>
+
+<title>
+    REFCON - Events
+</title>
+
+<style>
+    .unclick{
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+</style>
+
+<div class="jumbotron" style="padding-top: 20px;">
+
+<a style="margin-bottom: 20px;" href="/event" class="btn btn-outline-primary" role="button"><i class="fa fa-arrow-left"></i></a>
+    
+    <div>
+        <div>
+            <% if(type === 'student' && data.rollNumbers.indexOf(rollNumber) != -1){ %>
+                <div class="alert alert-success">
+                <div style="float: left; font-size: larger;" class="unclick">Your Event ID:&nbsp;</div>
+                <div style="margin-top: -6px;"><strong style="font-size: 27px;"> <%= data.tokenId[data.rollNumbers.indexOf(rollNumber)] %> </strong></div>
+                </div>
+            <% } %>
+        </div>
+        <div></div>
+        <h1><%= data.eventName %></h1>
+        
+    </div>
+    <div>
+        <p>
+            <h6><strong>Description:</strong></h6>
+            
+            <div style="word-wrap: break-word;">
+                &nbsp&nbsp&nbsp&nbsp&nbsp<%= data.eventDescription %>
+            </div>
+            <br>
+            <div style="float: left;" class="alert alert-info unclick" style="margin-top: 30px;">
+                <h5><strong>Event Info:</strong></h5>
+                <div>
+                <div style="float: left;">&nbsp&nbsp&nbsp&nbsp&nbsp Branch: <strong> <%= data.participantType.toUpperCase() %> </strong></div>
+                <div style="float: left;">&nbsp&nbsp&nbsp&nbsp&nbsp Year: <strong> <%= data.yearType %> </strong></div>
+                <div style="float: left;">&nbsp&nbsp&nbsp&nbsp&nbsp Venue: <strong> <%= data.venue %> </strong></div>
+                <div style="float: left;">&nbsp&nbsp&nbsp&nbsp&nbsp Date: <strong> <%= data.date %> </strong></div>
+                <div style="float: left;">&nbsp&nbsp&nbsp&nbsp&nbsp Starts at: <strong> <%= data.time %> </strong></div>
+                <div style="float: left;">&nbsp&nbsp&nbsp&nbsp&nbsp Prizes: <strong> <%= data.prizes %> </strong></div>
+                <div style="float: left;">&nbsp&nbsp&nbsp&nbsp&nbsp Registration Fee: <strong> ₹ <%= data.fee %> </strong></div>
+
+                <% if(type === 'student' && (!data.rollNumbers.includes(rollNumber))){ %>
+                    <div style="display: block;">
+                        <form action="/eventpayment" method="POST">
+                            <input type="hidden" name="id" value="<%= data._id %>">
+                            <input type="hidden" name="amount" value="<%= data.fee %>">
+                            <button type="submit" style="float: right; margin-top: 15px;" class="text-right btn btn-primary">Register</button>
+                        </form>
+                    </div>
+                <% } %>
+
+                </div>
+            </div>
+        </p>
+    </div>
+
+
+
+</div>

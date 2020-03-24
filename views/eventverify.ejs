@@ -1,0 +1,54 @@
+<%- include("navbaronly"); -%>
+
+<title>
+    REFCON - Events
+</title>
+
+<style>
+    .box {
+        display: none;
+    }
+
+    .form-signin {
+        width: 100%;
+        max-width: 450px;
+        padding: 15px;
+    }
+</style>
+
+<div class="container">
+
+    <a style="margin-left: 15px; margin-top: 20px;" href="/event" class="btn btn-outline-primary" role="button"><i class="fa fa-arrow-left"></i></a>
+
+    <form class="form-signin" action="/eventverify" method="POST">
+        <input required minlength="5" maxlength="5" type="text" name="tokenId" class="form-control" placeholder="Enter the Event ID">
+
+        <button type="submit" style="margin-top: 10px;" class="btn btn-primary">Search</button>
+
+        <% if(found === "true"){ %>
+        <div style="margin-top: 10px;" class="card alert alert-success" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Registered Event Name: <strong> <%= eventName %> </strong> </h5>
+                <h5 class="card-title">Roll Number: <strong> <%= rollNumber %> </strong> </h5>
+                <h5 class="card-title">Name: <strong> <%= fullName %> </strong> </h5>
+                <h5 class="card-title">Department:   <strong> <%= department %> </strong></h5>
+                <h5 class="card-title">Year:
+                    <% if(year === "1"){ %>
+                        <strong style="font-family: 'Times New Roman', Times, serif;"> I </strong>
+                    <% } else if(year === "2"){%>
+                        <strong style="font-family: 'Times New Roman', Times, serif;"> II </strong>
+                    <% } else if(year === "3"){%>
+                        <strong style="font-family: 'Times New Roman', Times, serif;"> III </strong>
+                    <% } else if(year === "4"){%>
+                        <strong style="font-family: 'Times New Roman', Times, serif;"> IV </strong>
+                        <% } %>
+                </h5>
+            </div>
+        </div>
+        <% } else if(found === 'false'){%>
+            <div style="margin-top: 10px;" class="alert alert-danger">No Event ID matched!</div>
+            <div></div>
+            <% } %>
+
+    </form>
+</div>

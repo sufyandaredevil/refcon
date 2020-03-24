@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>REFCON - ADMIN</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <link rel="icon" href="../imgs/refcon.svg" type="image/svg">
+    <link href="css/login.css" rel="stylesheet">
+    
+    <style>
+        .highlight{
+            font-weight: bold;
+        }
+        .highlight:hover{
+            font-weight: normal;
+        }
+    </style>
+
+</head>
+
+<body class="text-center">
+
+    <form class="form-signin" action="/admin" method="POST">
+
+        <img class="mb-4" src="imgs/refcon.svg" alt="" width="125" height="125">
+
+        <%if(typerror != "") {%>
+        <div class="alert alert-danger"><%= typerror %>
+            <div><a href="/login" style="text-decoration: none;"><font class="highlight" style="color: #387bfe;">Click here</font></a> if you're not an admin</div>
+        </div>
+        
+        <%}%>
+
+    <input type="text" id="inputEmail" class="form-control" placeholder="Username" required="" autofocus="" name="username">
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" name="password">
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+
+  </form>
+
+</body>
+
+</html>

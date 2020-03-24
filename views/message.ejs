@@ -1,0 +1,85 @@
+<%- include("navbaronly"); -%>
+
+<title>
+    REFCON - <%= questionTitle %>
+</title>
+
+<body >
+    <link rel="stylesheet" href="../css/studenteacherdiscussion.css">
+    <div class="container">
+        <% if(type === 'student'){ %>
+
+            <a style="margin-top: 10px;" href="/studenteacherdiscussion" class="btn btn-outline-primary" role="button"><i class="fa fa-arrow-left"></i></a>
+
+            <div style="font-size:30px; margin-top: 10px;">
+                <%= questionTitle %>
+            </div>
+
+            <div class="pxc-subcard" style="margin-top: 15px;">
+                <div style="font-size: large;" class="pxc-content">
+                    Question: 
+                    <div style="word-wrap: break-word;">
+                        <br>&nbsp&nbsp&nbsp&nbsp&nbsp<%= question %>
+                    </div>
+                </div>
+            </div>
+
+            <% if(answer === undefined){ %>
+                <div>
+                    No replies
+                </div>
+            <% } else{%>
+                <div class="pxc-subcard" style="font-size: large; background-color: lightgreen;">
+                    Answer:
+                    <div style="word-wrap: break-word;">
+                        <br>&nbsp&nbsp&nbsp&nbsp&nbsp<%= answer %>
+                    </div>
+                    <div class="text-right"><%= "Replied on " + repliedDate%></div>
+                </div>
+            <% } %>
+        <% } else if(type === 'teacher'){ %>
+
+            <a style="margin-top: 10px;" href="/studenteacherdiscussion" class="btn btn-outline-primary" role="button"><i class="fa fa-arrow-left"></i></a>
+
+            <div style="font-size:30px; margin-top: 10px;">
+                <%= questionTitle %>
+            </div>
+
+            <div class="pxc-subcard" style="margin-top: 15px;">
+                <div style="font-size: large;" class="pxc-content">
+                    Question: 
+                    <div style="word-wrap: break-word;">
+                        <br>&nbsp&nbsp&nbsp&nbsp&nbsp<%= question %>
+                    </div>
+                </div>
+            </div>
+
+            <% if(answer === undefined){ %>
+
+                <div>
+                <form action="/message/<%= messageID %>" method="POST">
+                    <textarea required placeholder="Enter you Answer Here" class="form-control" name="answer" rows="5" cols="30" style="margin-bottom: 10px;"></textarea>
+                    <input type="hidden" name="messageId" value="<%= messageID %>">
+                    <button class="btn btn-primary"> Send Message</button>
+                </form>
+                </div>
+
+                <div style="margin-top: 15px;"></div>
+            <% } else{%>
+                <div class="pxc-subcard" style="font-size: large; background-color: lightgreen;">
+                    Your Answer:
+                    <div style="word-wrap: break-word;">
+                        <br>&nbsp&nbsp&nbsp&nbsp&nbsp<%= answer %>
+                    </div>
+                    <div class="text-right"><%= "Replied on " + repliedDate%></div>
+                </div>
+            <% } %>
+
+
+
+        <% } %>
+
+
+    </div>
+
+</body>

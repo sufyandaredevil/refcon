@@ -1,0 +1,80 @@
+<%- include("navbaronly"); -%>
+
+<title>
+    REFCON - Student Teacher Discussion
+</title>
+
+<body>
+    <link rel="stylesheet" href="../css/studenteacherdiscussion.css">
+    <div class="container">
+        <% if(type === 'student'){ %>
+
+            <div class="text-right">
+                <a href="/newmessage" style="margin-top: 10px; margin-bottom: 10px; font-size: large; color: white;" class="btn btn-primary">New Message</a>
+            </div>
+
+            <% if(questionTitle.length !=0){ %>
+            <% for(var i = questionTitle.length-1; i >= 0; i--){ %>
+                <div onclick="location.href='/message/<%= messageID[i] %>'" class="pxc-subcard unclick" onmouseover="this.style.background='#2f6cda';" onmouseout="this.style.background='#387bfe'">
+                    <div class="pxc-title"> <%= questionTitle[i] %> </div>
+                    <div style="word-wrap: break-word;" class="pxc-content">
+                        <%= question[i] %>
+                    </div>
+                    <div>
+                        <div style="margin-top: 5px;"> 
+                            <%= "Sent to FID: " + to[i] + " on " + date[i] %> 
+                        </div>
+                        <% if(answer[i] === undefined){ %>
+                        <div style="color: #76212a;" class="text-right" title="Delete(no reply posted)">
+                             No reply posted <a style="margin-bottom: 5px;" class="btn btn-danger" href="/studenteacherdiscussiondelete/<%= messageID[i] %>"><i class="fa fa-trash"></i></a>
+                        </div>
+                        <% } else{%>
+                            <div class="text-right" title="Delete(reply posted)">
+                                <%= "Replied on " + repliedDate[i]%> <a style="margin-bottom: 5px;" class="btn btn-dark" href="/studenteacherdiscussiondelete/<%= messageID[i] %>"><i class="fa fa-trash"></i></a>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+                <% } %>
+            <% } else{%>
+                <div class="alert alert-info" style="margin-top: 30px;">
+                    <h5>No questions has been asked </h5>
+                </div>
+            <% } %>
+
+        <% } else if(type === 'teacher'){ %>
+        
+        <% if(questionTitle != 0){ %>
+            <% for(var i = questionTitle.length-1; i >= 0; i--){ %>
+                <div onclick="location.href='/message/<%= messageID[i] %>'" class="pxc-subcard unclick" style="margin-top: 15px;" onmouseover="this.style.background='#2f6cda';" onmouseout="this.style.background='#387bfe'">
+                    <div class="pxc-title"> <%= questionTitle[i] %> </div>
+                    <div style="word-wrap: break-word;" class="pxc-content">
+                        <%= question[i] %>
+                    </div>
+                    <div>
+                        <div style="margin-top: 5px;"> 
+                            <%= "Sent by RNO: " + fromID[i] + " on " + date[i] %> 
+                        </div>
+                        <% if(answer[i] === undefined){ %>
+                        <div style="color: #76212a;" class="text-right">
+                            You haven't replied
+                        </div>
+                        <% } else{%>
+                            <div class="text-right">
+                                <%= "You replied on " + repliedDate[i]%>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+                <% } %>
+        <% } else{ %>
+                <div class="alert alert-info" style="margin-top: 30px;">
+                    <h5>No questions posted</h5>
+                </div>
+            <% } %>
+
+    <% } %>
+
+    </div>
+
+</body>

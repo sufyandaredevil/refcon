@@ -1,0 +1,59 @@
+<%- include("adminheader"); -%>
+
+<title>
+    REFCON - ADMIN REPORT: <%= data.reportTitle %>
+</title>
+
+<style>
+    button{
+        margin-top: 5px;
+    }
+</style>
+
+<div class="jumbotron" style="padding-top: 20px;">
+
+<a style="margin-bottom: 20px;" href="/adminreport" class="btn btn-outline-primary" role="button"><i class="fa fa-arrow-left"></i></a>
+    
+    <div>
+
+        <h1><%= data.reportTitle %></h1>
+        
+    </div>
+    <div>
+        <p>
+            <h6><strong>Description:</strong></h6>
+            
+            <div style="word-wrap: break-word;">
+                &nbsp&nbsp&nbsp&nbsp&nbsp<%= data.report %>
+            </div>
+            <br>
+            <div style="float: left;" class="alert <%= data.answer === undefined ? "alert-danger" : "alert-success" %> unclick" style="margin-top: 30px;">
+                <h5><strong>Report Brief:</strong></h5>
+                <div>
+                <div style="float: left;">&nbsp&nbsp&nbsp&nbsp&nbsp Report Type: <strong> <%= data.reportType.toUpperCase() %> </strong></div>
+                <div style="float: left;">&nbsp&nbsp&nbsp&nbsp&nbsp Current Status: <strong> <%= data.answer === undefined ? "Not resolved" : data.answer %> </strong></div>
+
+                </div>
+            </div>
+        </p>
+    </div>
+
+</div>
+<div class="jumbotron" style="margin-top: -70px;">
+    <h6><strong>Change Status:</strong></h6>
+    <div style="display: block;">
+        <form action="/adminreportinfo" method="POST">
+            <input type="hidden" name="id" value="<%= data._id %>">
+            <% if(data.reportType === 'change'){ %>
+                <button name="btnType" value="Changes Applied" class="btn btn-success">RESOLVED</button>
+            <% } else{%>
+                <button name="btnType" value="Bug fixed" class="btn btn-success">BUG FIXED</button>
+            <% } %>
+            <button name="btnType" value="Clarity needed" class="btn btn-warning">NEED CLARITY</button>
+            <button name="btnType" value="Can't be resolved" class="btn btn-danger">CAN'T RESOLVE</button>
+            <button name="btnType" value="Change might lead to conflict" class="btn btn-info">DATA CONFLICT</button>
+            <button name="btnType" value="On process..." class="btn btn-warning">ON PROCESS</button>
+            <button name="btnType" value="Reference to unaccountable asset" class="btn btn-dark">ASSET ERROR</button>
+        </form>
+    </div>
+</div>

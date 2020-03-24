@@ -1,0 +1,47 @@
+<%- include("navbaronly"); -%>
+
+<title>
+    REFCON - <%= data.reportTitle %>
+</title>
+
+<style>
+    .unclick{
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+</style>
+
+<div class="jumbotron" style="padding-top: 20px;">
+
+<a style="margin-bottom: 20px;" href="/report" class="btn btn-outline-primary" role="button"><i class="fa fa-arrow-left"></i></a>
+    
+    <div>
+
+        <h1><%= data.reportTitle %></h1>
+        
+    </div>
+    <div>
+        <p>
+            <h6><strong>Description:</strong></h6>
+            
+            <div style="word-wrap: break-word;">
+                &nbsp&nbsp&nbsp&nbsp&nbsp<%= data.report %>
+            </div>
+            <br>
+            <div style="float: left;" class="alert <%= data.answer === undefined ? "alert-danger" : "alert-success" %> unclick" style="margin-top: 30px;">
+                <h5><strong>Report Brief:</strong></h5>
+                <div>
+                <div style="float: left;">&nbsp&nbsp&nbsp&nbsp&nbsp Report Type: <strong> <%= data.reportType.toUpperCase() %> </strong></div>
+                <div style="float: left;">&nbsp&nbsp&nbsp&nbsp&nbsp Report Status: <strong> <%= data.answer === undefined ? "Not resolved" : data.answer %> </strong></div>
+
+                </div>
+            </div>
+        </p>
+    </div>
+
+
+
+</div>

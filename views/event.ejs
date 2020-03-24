@@ -1,0 +1,131 @@
+<%- include("navbaronly"); -%>
+
+<title>
+  REFCON - Events
+</title>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../css/event.css">
+
+<body>
+
+  <div class="">
+
+
+    <% if(type === 'teacher'){%>
+    <div class="container">
+      <div class="text-right">
+        <a href="/eventspace" style="margin-top: 10px; font-size: large; color: white;" class="btn btn-primary">Post
+          New Event</a>
+          <a href="/eventverify" style="margin-top: 10px; font-size: large; color: white;" class="btn btn-primary">Verify Event IDs</a>
+      </div>
+    </div>
+    <% } %>
+
+  </div>
+
+  <div>
+    <% if(data.length === 0){ %>
+    <div class="container">
+
+      <div class="alert alert-info" style="margin-top: 30px;">
+        <h5>No Events posted </h5>
+      </div>
+    </div>
+    <% } else{%>
+
+
+    <% for(var i=data.length-1; i>=0 ; i--){%>
+    <div title="Branch: <%= data[i].participantType %>&#010;Year: <%= data[i].yearType %>&#010;Event Name: <%= data[i].eventName %>&#010;Venue: <%= data[i].venue %>&#010;Date: <%= data[i].date%>&#010;Time: <%= data[i].time%>&#010;Prizes: <%= data[i].prizes %>&#010;Fee: <%= data[i].fee %>&#010;" onclick="location.href='/event/<%= data[i]._id %>'" class="card <%= data[i].participantType %>">
+
+      <div class="additional" style="margin: 0px;">
+
+        <div class="user-card">
+          <div class="participant-type center">
+            BRANCH: <%= data[i].participantType; %>
+          </div>
+
+          <% if(type === 'student'){ %> <img class="center" src="../imgs/<%= data[i].participantType.toLowerCase() %>.svg" width="65%" alt=""> <% } %>
+
+          <% if(type === 'teacher'){ %> <div title="Delete Event" class="center"><a class="btn btn-outline-dark" href="/eventdelete/<%= data[i]._id %>"><i class="fa fa-3x fa-trash"></i></a></div> <% } %>
+
+          <div class="year-type center">
+            YEAR: <%= data[i].yearType %>
+          </div>
+        </div>
+
+        <div class="hover-info">
+
+          <h1> <%= data[i].eventName %> </h1>
+          <div class="coords">
+            <span>Venue:</span>
+            <span> <strong> <%= data[i].venue%> </strong> </span>
+          </div>
+          <div class="coords">
+            <span>Date & Time:</span>
+            <span> <strong> <%= data[i].date%>, <%= data[i].time%> </strong> </span>
+          </div>
+          <div class="stats">
+            <div>
+              <div class="title">Prizes</div>
+              <i class="fa fa-trophy"></i>
+              <div class="value"> <%= data[i].prizes%> </div>
+            </div>
+            <div>
+              <div class="title">Fee</div>
+              <i class="fa fa-rupee"></i>
+              <div class="value"> <%= data[i].fee%> </div>
+            </div>
+            <div>
+              <div class="title">Registered</div>
+              <i class="fa fa-group"></i>
+              <div class="value">
+                <% if(data[i].registered === undefined){ %>
+                0
+                <% } else{ %>
+                <%= data[i].registered %>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="general">
+        <h1> <%= data[i].eventName %> </h1>
+        <% if(data[i].eventDescription.length >= 190){ %>
+        <p> <%= data[i].eventDescription.slice(0,201) %>... </p>
+        <% } else{ %>
+        <p> <%= data[i].eventDescription %> </p>
+        <% } %>
+        <span class="more">
+          <% if(type === 'student'){ %>
+          Hold/Hover for brief info |
+          <% } else{ %>
+          Hold/Hover for brief info
+          <% } %>
+          <% if(type === 'student'){ %>
+          <% if(data[i].rollNumbers.includes(rollNumber) == false){ %>
+          <font style="color: red;"> <strong>You haven't Registered</strong> </font>
+          <% } else{ %>
+          <font style="color: green;"> <strong>View your Event ID</strong> </font>
+          <% } %>
+          <% } %>
+        </span>
+      </div>
+    </div>
+
+    <% } %>
+
+    <% } %>
+  </div>
+
+
+
+
+
+
+</body>
+
+</html>
