@@ -11,13 +11,23 @@
 
     <link rel="icon" href="../imgs/refcon.svg" type="image/svg">
     <link href="css/login.css" rel="stylesheet">
-    
+
     <style>
-        .highlight{
+        .highlight {
             font-weight: bold;
         }
-        .highlight:hover{
+
+        .highlight:hover {
             font-weight: normal;
+        }
+
+        img {
+            -webkit-user-drag: none;
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-drag: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
         }
     </style>
 
@@ -31,9 +41,11 @@
 
         <%if(typerror != "") {%>
         <div class="alert alert-danger"><%= typerror %>
-            <div><a href="/login" style="text-decoration: none;"><font class="highlight" style="color: #387bfe;">Click here</font></a> if you're not an admin</div>
+            <div><a href="/login" style="text-decoration: none;">
+                    <font class="highlight" style="color: #387bfe;">Click here</font>
+                </a> if you're not an admin</div>
         </div>
-        
+
         <%}%>
 
     <input type="text" id="inputEmail" class="form-control" placeholder="Username" required="" autofocus="" name="username">
