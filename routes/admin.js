@@ -13,7 +13,7 @@ module.exports = (app, md5, RefconTeacher, RefconReport) => {
     });
 
     app.post(["/admin", "/adminlogin"], (req, res) => {
-        RefconTeacher.findOne({$and: [{email: req.body.username}, {password: md5(req.body.password)}]}, (err, data) => {
+        RefconTeacher.findOne({$and: [{email: req.body.username}, {password: md5(req.body.password)}, {type: 'admin'}]}, (err, data) => {
 
             if(data){
                 req.session.user = data;
@@ -31,7 +31,7 @@ module.exports = (app, md5, RefconTeacher, RefconReport) => {
         if(!req.session.user){
             res.render('adminlogin', {typerror: "You're not logged in or you're session might have ended."});
         }
-        else{
+        else if(req.session.user.type === "admin"){
 
             RefconReport.find({}, (err, data)=> {
                 if(data){
@@ -45,7 +45,7 @@ module.exports = (app, md5, RefconTeacher, RefconReport) => {
         if(!req.session.user){
             res.render('login', {typerror: "You haven't logged in or your're session might have ended", success: ""});
         }
-        else{
+        else if(req.session.user.type === 'admin'){
             RefconReport.findOne({_id: req.params.reportId}, (err, data) => {
                 if(data){
                     res.render('adminreportinfo', {data: data});
@@ -140,7 +140,7 @@ module.exports = (app, md5, RefconTeacher, RefconReport) => {
         if(!req.session.user){
             res.render('adminlogin', {typerror: "You're not logged in or you're session might have ended."});
         }
-        else{
+        else if(req.session.user.type === 'admin'){
             res.render('adminoverview', { name: req.session.user.type });
         }
     });

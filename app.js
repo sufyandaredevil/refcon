@@ -24,7 +24,7 @@ app.set('view engine', 'ejs');
 
 //=====================================================================================================================
 //DB Connection and Schema Setup
-mongoose.connect(MONGONLINE, { useNewUrlParser: true, useUnifiedTopology: true} ,(err) => {
+mongoose.connect(MONGOFFLINE, { useNewUrlParser: true, useUnifiedTopology: true} ,(err) => {
     if(err){
         console.log(err);
         }
@@ -114,6 +114,36 @@ const refconReportSchema = {
     answer: String
 };
 
+const studentQueueSchema = {
+    department: String,
+    year: String,
+    unalloc: [String],
+    alloc: [String]
+};
+
+const checkBooleanSchema = {
+    start: Boolean,
+    allAllocated: Boolean
+};
+
+const seatingOrderSchema = {
+    //blockinfo: contains ( department floor hallno )
+    blockInfo: String,
+    rollNumbers: [String],
+    seatTypes:[String],
+    seatNumbers: [Number],
+    department1: String,
+    department2: String,
+    year1: String,
+    year2: String,
+    numberOfRows: String,
+    numberOfColumns: String,
+    totalNumberOfStudents: String,
+    numberOfStudentsInDepartment1: String,
+    numberOfStudentsInDepartment2: String,
+
+};
+
 const RefconStudent = mongoose.model("RefconStudent", refconStudentSchema);
 const RefconTeacher = mongoose.model("RefconTeacher", refconTeacherSchema);
 const RefconMessage = mongoose.model("RefconMessage", refconMessageSchema);
@@ -121,6 +151,29 @@ const RefconInternalMark = mongoose.model('RefconInternalMark', refconInternalMa
 const RefconEvent = mongoose.model('RefconEvent', refconEventSchema);
 const RefconExamFee = mongoose.model('RefconExamFee', refconExamFeeSchema);
 const RefconReport = mongoose.model('RefconReport', refconReportSchema);
+const StudentQueue = mongoose.model('StudentQueue', studentQueueSchema);
+const CheckBoolean = mongoose.model('CheckBoolean', checkBooleanSchema);
+const SeatingOrder = mongoose.model('SeatingOrder', seatingOrderSchema);
+
+//Following is created internally in the database:
+// var department = ['CSE', 'EEE', 'ECE', 'MECH', 'CIVIL', 'IT'];
+// var year = ['1', '2', '3', '4'];
+// for(var i=0; i<department.length; i++){
+//     for(var j=0; j<year.length; j++){
+//         console.log(department[i] + " " + year[j]);
+//         const dept_year = new StudentQueue({
+//             department: department[i],
+//             year: year[j],
+//         });
+//         dept_year.save();
+//     }
+// }
+// 
+// const checkboolean = new CheckBoolean({
+//     start: false,
+//     allAllocated: false
+// });
+// checkboolean.save();
 
 //User-defined functions:
 var sendDateTime = () => {
@@ -149,6 +202,7 @@ const examfee = require('./routes/examfee');
 const examfeepayment = require('./routes/examfeepayment');
 const report = require('./routes/report');
 const admin = require('./routes/admin');
+const seatingorder = require('./routes/seatingorder');
 
 //Passing params to specific routes
 login(app, md5, RefconStudent, RefconTeacher);
@@ -166,6 +220,7 @@ examfee(app, RefconStudent,RefconExamFee);
 examfeepayment(app, request, RefconExamFee);
 report(app, RefconReport, sendDateTime);
 admin(app, md5, RefconTeacher, RefconReport);
+seatingorder(app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder);
 
 //=====================================================================================================================
 
