@@ -5,6 +5,15 @@
 </title>
 
 <style>
+
+    .unclick{
+        user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
+    }
+    
     .makesmaller{
         font-size:10px;
     }
@@ -28,22 +37,18 @@
             var noOfstudentsInDept1="";
             var noOfstudentsInDept2="";
             var textInfo="";
-
+            var dispdept1 = $('input[name="department1"]:checked').val();
+            var dispdept2 = $('input[name="department2"]:checked').val();
+            var dispyear1 = $('input[name="year1"]:checked').val();
+            var dispyear2 = $('input[name="year2"]:checked').val();
+            
             const multipliedNo = parseInt(document.getElementById("noOfRows").value)*parseInt(document.getElementById("noOfColumns").value);
-            if(multipliedNo % 2 === 0){
 
-                noOfstudentsInDept1 = multipliedNo/2;
-                noOfstudentsInDept2 = multipliedNo/2;
-                textInfo = '<br><ul><li>Number of Students in Department 1: '+noOfstudentsInDept1+'</li><li>Number of Students in Department 2: '+noOfstudentsInDept2+'</li>';
-
-            }
-            else{
                 noOfstudentsInDept1 = Math.round(multipliedNo/2);
                 noOfstudentsInDept2 = Math.floor(multipliedNo/2);
-                textInfo = '<br><ul><li>Number of Students in Department 1: '+noOfstudentsInDept1+'</li><li>Number of Students in Department 2: '+noOfstudentsInDept2+'</li>';
-            }
+                textInfo = '<br><ul><li>Number of Students in '+dispdept1+', '+dispyear1+' year: '+noOfstudentsInDept1+'</li><li>Number of Students in '+dispdept2+', '+dispyear2+' year: '+noOfstudentsInDept2+'</li>';
 
-            document.getElementById('noOfStudentsInfo').innerHTML = '<font style="font-weight:bolder;">'+String(multipliedNo)+ '</font>' +" students can be allocated"+textInfo;
+            document.getElementById('noOfStudentsInfo').innerHTML = 'Maximum of <font style="font-weight:bolder;">'+String(multipliedNo)+ '</font>' +" students can be allocated"+textInfo;
             document.getElementById('noOfStudentsInfo').style.display = "block";
         }
         else{
@@ -54,13 +59,13 @@
     
 </script>
 
-<body>
+<body onload="showNoOfStudentsAndInfo()">
     <div class="container" style="margin-top: 30px;">
 
         <a style="margin-bottom: 20px;" href="/seatingorder" class="btn btn-outline-primary" role="button"><i class="fa fa-arrow-left"></i></a>
 
         <%if(typerror != "") {%>
-            <div class="alert alert-danger"><a style="color: #7d1523; text-decoration: none;" href="#dept"><%= typerror %></a></div>
+            <div class="alert unclick alert-danger"><a style="color: #7d1523; text-decoration: none;" href="#dept"><%= typerror %></a></div>
         <%}%>
 
         <h5>New Seating Space</h5>
@@ -92,63 +97,63 @@
                 <div id="main" style="float: left;;"><i class="fa fa-info-circle" aria-hidden="true"></i> Cascading matters with Departments selection. </div>
                 <div id="clickhere"><a style="text-decoration: none;" href="#infotag" onclick="showdiv()">&nbsp;Click Here</a> to know why</div>
                 <div style="display: none;" id="info">
-                    <li>Seating alternation starts with Department 1 (i.e.) DEPT1, DEPT2, DEPT1,DEPT2, ......</li>
-                    <li>If number of rows is odd then Department 1's student count will be greater than Department 2's student count</li>
+                    <li>Seating alternation starts with Department 1 (i.e.) DEPT1, DEPT2, DEPT1,DEPT2,......</li>
+                    <li>If number of rows and columns are odd then Department 1's student count will be greater than Department 2's student count</li>
                 </div>
             </div>
 
             <div id="dept" style="margin-top: 9px;"></div>
             <label> Department 1: </label> &nbsp;
-            <input checked type="radio" name="department1" value="CSE">
+            <input checked type="radio" onchange="showNoOfStudentsAndInfo()()" name="department1" value="CSE">
             <label>CSE</label>
-            <input type="radio" name="department1" value="IT">
+            <input type="radio" onchange="showNoOfStudentsAndInfo()()" name="department1" value="IT">
             <label>IT</label>
-            <input type="radio" name="department1" value="CIVIL">
+            <input type="radio" onchange="showNoOfStudentsAndInfo()()" name="department1" value="CIVIL">
             <label>CIVIL</label>
-            <input type="radio" name="department1" value="EEE">
+            <input type="radio" onchange="showNoOfStudentsAndInfo()()" name="department1" value="EEE">
             <label>EEE</label>
-            <input type="radio" name="department1" value="ECE">
+            <input type="radio" onchange="showNoOfStudentsAndInfo()()" name="department1" value="ECE">
             <label>ECE</label>
-            <input type="radio" name="department1" value="MECH">
+            <input type="radio" onchange="showNoOfStudentsAndInfo()()" name="department1" value="MECH">
             <label>MECH</label>
 
             <div></div>
 
             <label> Year 1: </label> &nbsp;
-            <input checked type="radio" name="year1" value="1">
+            <input type="radio" onchange="showNoOfStudentsAndInfo()()" name="year1" value="1">
             <label> <font style="font-family: 'Times New Roman', Times, serif;">I</font> </label> &nbsp;
-            <input type="radio" name="year1" value="2">
+            <input type="radio" onchange="showNoOfStudentsAndInfo()()" name="year1" value="2">
             <label> <font style="font-family: 'Times New Roman', Times, serif;">II</font> </label>&nbsp;
-            <input type="radio" name="year1" value="3">
+            <input checked type="radio" onchange="showNoOfStudentsAndInfo()()" name="year1" value="3">
             <label> <font style="font-family: 'Times New Roman', Times, serif;">III</font> </label>&nbsp;
-            <input type="radio" name="year1" value="4">
+            <input type="radio" onchange="showNoOfStudentsAndInfo()()" name="year1" value="4">
             <label> <font style="font-family: 'Times New Roman', Times, serif;">IV</font> </label>&nbsp;
 
             <div style="margin-top: 9px;"></div>
             <label> Department 2: </label> &nbsp;
-            <input type="radio" name="department2" value="CSE">
+            <input type="radio" onchange="showNoOfStudentsAndInfo()()" onchange="showNoOfStudentsAndInfo()()" name="department2" value="CSE">
             <label>CSE</label>
-            <input checked type="radio" name="department2" value="IT">
+            <input type="radio" onchange="showNoOfStudentsAndInfo()()" name="department2" value="IT">
             <label>IT</label>
-            <input type="radio" name="department2" value="CIVIL">
+            <input type="radio" onchange="showNoOfStudentsAndInfo()()" name="department2" value="CIVIL">
             <label>CIVIL</label>
-            <input type="radio" name="department2" value="EEE">
+            <input type="radio" onchange="showNoOfStudentsAndInfo()()" name="department2" value="EEE">
             <label>EEE</label>
-            <input type="radio" name="department2" value="ECE">
+            <input checked type="radio" onchange="showNoOfStudentsAndInfo()()" name="department2" value="ECE">
             <label>ECE</label>
-            <input type="radio" name="department2" value="MECH">
+            <input type="radio" onchange="showNoOfStudentsAndInfo()()" name="department2" value="MECH">
             <label>MECH</label>
 
             <div></div>
 
             <label> Year 2: </label> &nbsp;
-            <input checked type="radio" name="year2" value="1">
+            <input type="radio" onchange="showNoOfStudentsAndInfo()()" name="year2" value="1">
             <label> <font style="font-family: 'Times New Roman', Times, serif;">I</font> </label> &nbsp;
-            <input type="radio" name="year2" value="2">
+            <input type="radio" onchange="showNoOfStudentsAndInfo()()" name="year2" value="2">
             <label> <font style="font-family: 'Times New Roman', Times, serif;">II</font> </label>&nbsp;
-            <input type="radio" name="year2" value="3">
+            <input checked type="radio" onchange="showNoOfStudentsAndInfo()()" name="year2" value="3">
             <label> <font style="font-family: 'Times New Roman', Times, serif;">III</font> </label>&nbsp;
-            <input type="radio" name="year2" value="4">
+            <input type="radio" onchange="showNoOfStudentsAndInfo()()" name="year2" value="4">
             <label> <font style="font-family: 'Times New Roman', Times, serif;">IV</font> </label>&nbsp;
             
             <div></div>
@@ -159,7 +164,7 @@
 
             <table>
                 <tr>
-                    <td style="float: left;"> <label for="noOfRows">Number of Rows & Columns:&nbsp;&nbsp;</label><input oninput="showNoOfStudentsAndInfo()" style="width: 35px;" required type="number" maxlength="3" id="noOfRows" name="noOfRows">&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;<input oninput="showNoOfStudentsAndInfo()" style="width: 35px;" required type="number" maxlength="3" id="noOfColumns" name="noOfColumns"> </td>
+                    <td style="float: left;"> <label for="noOfRows">Number of Rows & Columns:&nbsp;&nbsp;</label><input oninput="showNoOfStudentsAndInfo()" style="width: 35px;" required type="number" maxlength="3" id="noOfRows" name="noOfRows" value="5">&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;<input oninput="showNoOfStudentsAndInfo()" style="width: 35px;" required type="number" maxlength="3" id="noOfColumns" name="noOfColumns" value="5"> </td>
                 </tr>
             </table>
 

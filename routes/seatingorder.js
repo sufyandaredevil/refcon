@@ -9,7 +9,11 @@ module.exports = (app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder) 
         }
         else if(req.session.user.type === 'teacher'){
 
-            res.render('seatingorder');
+            SeatingOrder.find({}, (err, data) => {
+
+                res.render('seatingorder', { type: req.session.user.type , data: data });
+
+            });
 
         }
         else if(req.session.user.type === 'student'){
@@ -27,50 +31,69 @@ module.exports = (app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder) 
         }
         else if(req.session.user.type === 'teacher'){
 
-            CheckBoolean.findOne((err, data) => {
+            StudentQueue.find({}, (err, presentData)=> {
 
-                if(data.allAllocated === false){
+                found = false;
 
-                    if(data.start === false){
+                for(i=0; i<presentData.length; i++){
+                    if(presentData[i].unalloc.length != 0){
+                        found = true;
+                        break;
+                    }
+                }
 
-                        data.start = true;
+                if(found === false){
+
+                    CheckBoolean.findOne((err, data)=> {
+                        data.allAllocated = true;
                         data.save();
 
-                        const department = ['CSE', 'EEE', 'ECE', 'MECH', 'MECH', 'CIVIL', 'IT'];
-                        const year = ['1', '2','3', '4'];
-    
-                        for(var i=0; i<department.length; i++){
-                            for(var j=0; j<year.length; j++){
-    
-                                RefconStudent.find({$and: [{department: department[i]}, {year: year[j]}]}).sort('rollNumber').exec((err, data1) => {
-                                    if(data1.length != 0){
-    
-                                        StudentQueue.findOne({$and: [{department: data1[0].department}, {year: data1[0].year}]}, (err, data2) => {
-    
-                                            for(var k=0; k< data1.length; k++){
-                                                data2.unalloc.push(data1[k].rollNumber);
-                                                data2.markModified('unalloc');
-                                            }
-                                            data2.save();
-
-                                        });
-    
-                                    }
-                                });
-    
-                            }
-                        }
-                        
-                    }
-                    else{
-                        StudentQueue.find({}).sort("year").exec((err, data) => {
-                            res.render('seatingorderspace', {data: data, typerror: ""});
-                        });
-                    }
+                        res.render('sent', {message: 'All students are allocated!', goback: 'seatingorder'});
+                    });
 
                 }
                 else{
-                    res.render('sent', {message: 'All students are allocated!', goback: 'seatingorder'});
+                    CheckBoolean.findOne((err, data) => {
+        
+                        if(data.start === false){
+    
+                            data.start = true;
+                            data.save();
+    
+                            const department = ['CSE', 'EEE', 'ECE', 'MECH', 'MECH', 'CIVIL', 'IT'];
+                            const year = ['1', '2','3', '4'];
+        
+                            for(var i=0; i<department.length; i++){
+                                for(var j=0; j<year.length; j++){
+        
+                                    RefconStudent.find({$and: [{department: department[i]}, {year: year[j]}]}).sort('rollNumber').exec((err, data1) => {
+                                        if(data1.length != 0){
+        
+                                            StudentQueue.findOne({$and: [{department: data1[0].department}, {year: data1[0].year}]}, (err, data2) => {
+        
+                                                for(var k=0; k< data1.length; k++){
+                                                    data2.unalloc.push(data1[k].rollNumber);
+                                                    data2.markModified('unalloc');
+                                                }
+                                                data2.save();
+    
+                                            });
+        
+                                        }
+                                    });
+        
+                                }
+                            }
+                            
+                        }
+                        else{
+                            StudentQueue.find({}).sort("year").exec((err, data) => {
+                                res.render('seatingorderspace', {data: data, typerror: ""});
+                            });
+                        }
+        
+                    });
+
                 }
 
             });
@@ -98,10 +121,13 @@ module.exports = (app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder) 
                     res.render('seatingorderspace', {data: data, typerror: "Can't select same department and year!"});
                 });
             }
+            else if(req.body.noOfRows === "0" || req.body.noOfColumns === "0"){
+                StudentQueue.find({}).sort("year").exec((err, data) => {
+                    res.render('seatingorderspace', {data: data, typerror: "Rows and Columns can't be zeroes!"});
+                });
+            }
             else{
 
-                var numberOfStudentsInDepartment1 = 0;
-                var numberOfStudentsInDepartment2 = 0;
                 const department1 = req.body.department1;
                 const department2 = req.body.department2;
                 const year1 = req.body.year1;
@@ -110,67 +136,220 @@ module.exports = (app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder) 
                 const noc = parseInt(req.body.noOfColumns);
                 const block = req.body.blockInfo;
                 const product = nor * noc;
-                if(product % 2 === 0){
-                    numberOfStudentsInDepartment1 = product/2;
-                    numberOfStudentsInDepartment2 = product/2;
-                }
-                else{
-                    numberOfStudentsInDepartment1 = Math.round(product/2);
-                    numberOfStudentsInDepartment2 = Math.floor(product/2);
-                }
+                
+                var numberOfStudentsInDepartment1 = Math.round(product/2);
+                var numberOfStudentsInDepartment2 = Math.floor(product/2);
 
                 StudentQueue.findOne({$and: [{department: department1}, {year: year1}]}, (err, department1data) => {
 
                     StudentQueue.findOne({$and: [{department: department2}, {year: year2}]}, (err, department2data) => {
 
-                        var dept1unalloc = [];
-                        var dept2unalloc = [];
-                        var rollNumbers = [];
-                        var seatTypes = [];
-                        var seatNumbers = [];
-
-                        for(var i=0; i<numberOfStudentsInDepartment1; i++){
-                            if( department1data.unalloc[i] != undefined ){ dept1unalloc.push(department1data.unalloc[i]); }
-                            else{ break; }
+                        if(department1data.unalloc.length === 0 && department2data.unalloc.length === 0){
+                            StudentQueue.find({}).sort("year").exec((err, d) => {
+                                res.render('seatingorderspace', {data: d, typerror: `Students in ${department1}, ${year1} year & ${department2}, ${year2} year are already allocated`});
+                            });
                         }
-
-                        for(var j=0; j<numberOfStudentsInDepartment2; j++){
-                            if( department2data.unalloc[j] != undefined ){ dept2unalloc.push(department2data.unalloc[j]); }
-                            else{ break; }
-                        }console.log("______________________________________________________________________________________________________");
-                        console.log(dept1unalloc);console.log(dept2unalloc);
-                        const dept1unalloclength = dept1unalloc.length;
-                        const dept2unalloclength = dept2unalloc.length;
-                        const totaldeptlength = dept1unalloclength+dept2unalloclength;
-
-                        if(nor % 2 === 0){
-
-                            console.log("even");
-
-
+                        else if(department1data.unalloc.length === 0){
+                            StudentQueue.find({}).sort("year").exec((err, d) => {
+                                res.render('seatingorderspace', {data: d, typerror: `Students in ${department1}, ${year1} year are already allocated`});
+                            });
+                        }
+                        else if(department2data.unalloc.length === 0){
+                            StudentQueue.find({}).sort("year").exec((err, d) => {
+                                res.render('seatingorderspace', {data: d, typerror: `Students in ${department2}, ${year2} year are already allocated`});
+                            });
                         }
                         else{
-                            var c = 0;
-                            var d1p = 0;
-                            var d2p = 0;
-                            for(i=0; i<totaldeptlength; i++){
 
-                                if(c%2 === 0 && dept1unalloc[d1p] != undefined){
-                                    rollNumbers.push(dept1unalloc[d1p]);
-                                    seatTypes.push(department1);
-                                    d1p++;
-                                    c++;
+                            var dept1unalloc = [];
+                            var dept2unalloc = [];
+                            var rollNumbers = [];
+                            var seatTypes = [];
+                            var seatNumbers = [];
+
+                            for(var i=0; i<numberOfStudentsInDepartment1; i++){
+                                if( department1data.unalloc[i] != undefined ){ dept1unalloc.push(department1data.unalloc[i]); }
+                                else{ break; }
+                            }
+
+                            for(var j=0; j<numberOfStudentsInDepartment2; j++){
+                                if( department2data.unalloc[j] != undefined ){ dept2unalloc.push(department2data.unalloc[j]); }
+                                else{ break; }
+                            }
+
+                            // console.log("______________________________________________________________________________________________________");
+
+                            var tempSeatTypes = [];
+
+                            if( nor % 2 === 0 && noc % 2 === 0 ){// special even case
+                                let dc = 0;
+                                let specialCount = 0;
+
+                                for(let i=0; i<nor; i++){
+                                    tempSeatTypes[i] = [];
+                                    for(let j=0; j<noc-1; j++){
+
+                                        if(dc % 2 === 0){
+                                            tempSeatTypes[i][j] = department1;
+                                        }
+                                        else{
+                                            tempSeatTypes[i][j] = department2;
+                                        }
+                                        dc++;
+                                    }
+
                                 }
-                                else if(dept2unalloc[d2p] != undefined){
-                                    rollNumbers.push(dept2unalloc[d2p]);
-                                    seatTypes.push(department2);
-                                    d2p++;
-                                    c++;
+                                for(let i=0; i<nor; i++){
+                                    if(specialCount % 2 === 0){
+                                        tempSeatTypes[i].push(department2);
+                                    }
+                                    else{
+                                        tempSeatTypes[i].push(department1);
+                                    }
+                                    specialCount++;
+                                }
+                                
+                            }
+                            else if( (nor % 2 === 0 && noc % 2 != 0) && (nor > noc || nor < noc) ){ //horizontal case
+                                let dc = 0;
+
+                                for(let i=0; i<nor; i++){
+                                    tempSeatTypes[i] = [];
+                                    for(let j=0; j<noc; j++){
+
+                                        if(dc % 2 === 0){
+                                            tempSeatTypes[i][j] = department1;
+                                        }
+                                        else{
+                                            tempSeatTypes[i][j] = department2;
+                                        }
+                                        dc++;
+                                    }
+
                                 }
 
                             }
-                            console.log(seatTypes);
-                            console.log(rollNumbers);
+                            else{ //vertical case
+
+                                let dc = 0;
+                                tempSeatTypes = Array.from(Array(nor), () => []);
+                                
+                                for(i=0; i<noc; i++){
+
+                                    let subCount = 0;
+
+                                    for(j=0; j<nor; j++){
+
+                                        if(dc % 2 === 0){
+                                            tempSeatTypes[subCount].push(department1);
+                                        }
+                                        else{
+                                            tempSeatTypes[subCount].push(department2);
+                                        }
+                                        subCount++;
+                                        dc++;
+                                    }
+                                }
+
+                            }
+
+                            var tempRollNumbers = Array.from(Array(nor), () => []);
+                            var tempSeatNumbers = Array.from(Array(nor), () => []);
+                            var rp1 = 0;
+                            var rp2 = 0;
+                            var seatno = 1;
+
+                            // console.log(dept1unalloc);
+                            // console.log(dept2unalloc);
+
+                            for(i=0; i<noc; i++){
+
+                                let subCount = 0;
+                                for(j=0; j<nor; j++){
+
+                                    if(tempSeatTypes[j][i] === department1){
+
+                                        if(dept1unalloc[rp1] != undefined){
+                                            tempRollNumbers[subCount].push(dept1unalloc[rp1]);
+                                            rp1++;
+                                        }
+                                        else{
+                                            tempRollNumbers[subCount].push("XXXXXXXXXXX");
+                                        }
+
+                                    }
+                                    else{
+                                        if(dept2unalloc[rp2] != undefined){
+                                            tempRollNumbers[subCount].push(dept2unalloc[rp2]);
+                                            rp2++;
+                                        }
+                                        else{
+                                            tempRollNumbers[subCount].push("XXXXXXXXXXX");
+                                        }
+                                    }
+                                    tempSeatNumbers[subCount].push(seatno++);
+                                    subCount++;
+                                    
+                                }
+                            }
+
+                            for(i=0; i<nor; i++){
+                                for(j=0; j<noc; j++){
+                                    seatNumbers.push(tempSeatNumbers[i][j]);
+                                    seatTypes.push(tempSeatTypes[i][j]);
+                                    rollNumbers.push(tempRollNumbers[i][j]);
+                                }
+                            }
+
+                            // for(i=0; i<nor; i++){
+                            //     for(j=0; j<noc; j++){
+                            //         process.stdout.write(tempSeatNumbers[i][j]+"/"+tempSeatTypes[i][j]+"/"+tempRollNumbers[i][j]+" ");
+                            //     }
+                            //     console.log();
+                            // }
+
+                            // console.log(seatNumbers);
+                            // console.log(seatTypes);
+                            // console.log(rollNumbers);
+
+                            for(i=0; i<dept1unalloc.length; i++){
+                                department1data.alloc.push(department1data.unalloc.shift());
+                            }
+                            for(j=0; j<dept2unalloc.length; j++){
+                                department2data.alloc.push(department2data.unalloc.shift());
+                            }
+
+                            department1data.markModified('unalloc');
+                            department2data.markModified('unalloc');
+                            department1data.markModified('alloc');
+                            department2data.markModified('alloc');
+                            department1data.save();
+                            department2data.save();
+
+                            const newSeatingOrder = new SeatingOrder({
+                                block: block,
+                                rollNumbers: rollNumbers,
+                                seatTypes: seatTypes,
+                                seatNumbers: seatNumbers,
+                                department1: department1,
+                                department2: department2,
+                                year1: year1,
+                                year2: year2,
+                                rows: String(nor),
+                                columns: String(noc),
+                                department1rollNumbers: dept1unalloc,
+                                department2rollNumbers: dept2unalloc
+                            });
+                            
+                            newSeatingOrder.save((err, data) => {
+                                if(data){
+                                    res.render('sent', {message: "Seating Space Created successfully", goback: "seatingorder"});
+                                }
+                                else{
+                                    res.render('oops');
+                                }
+                            });
+
                         }
 
     

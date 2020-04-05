@@ -127,8 +127,8 @@ const checkBooleanSchema = {
 };
 
 const seatingOrderSchema = {
-    //blockinfo: contains ( department floor hallno )
-    blockInfo: String,
+    //block: contains ( department floor hallno )
+    block: String,
     rollNumbers: [String],
     seatTypes:[String],
     seatNumbers: [Number],
@@ -136,11 +136,10 @@ const seatingOrderSchema = {
     department2: String,
     year1: String,
     year2: String,
-    numberOfRows: String,
-    numberOfColumns: String,
-    totalNumberOfStudents: String,
-    numberOfStudentsInDepartment1: String,
-    numberOfStudentsInDepartment2: String,
+    rows: String,
+    columns: String,
+    department1rollNumbers:[String],
+    department2rollNumbers:[String]
 
 };
 
