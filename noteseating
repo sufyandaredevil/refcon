@@ -1,7 +1,5 @@
-(.) seating arrangement works for consistent 2 departments only
+(.) students from only 2 different department/year can be allocated and more than 2 department/year can't be done
 (.) only for one seating session
-(.) mixed up arrangements can't be done
-(.) when 2 departments are selected then rollnumbers(sorted) are selected from 0th index to nth index assigned by the algorithm
-(.) seating approach is from top to down, left to right
-(.) no fields to track starting and ending rollnumbers in a department
+(.) when 2 departments are selected then rollnumbers(sorted) are selected from 0th index to nth index assigned by the algorithm sequentially in a queue fashion and modification leads to conflicts
+(.) seating allocation starts from top to bottom, left to right
 (.) only checkboard seating pattern available
