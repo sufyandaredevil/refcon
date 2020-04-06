@@ -4,3 +4,4 @@
 (.) when 2 departments are selected then rollnumbers(sorted) are selected from 0th index to nth index assigned by the algorithm
 (.) seating approach is from top to down, left to right
 (.) no fields to track starting and ending rollnumbers in a department
+(.) only checkboard seating pattern available

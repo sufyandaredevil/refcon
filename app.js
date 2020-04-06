@@ -128,10 +128,11 @@ const checkBooleanSchema = {
 
 const seatingOrderSchema = {
     //block: contains ( department floor hallno )
+    session: String,
     block: String,
     rollNumbers: [String],
     seatTypes:[String],
-    seatNumbers: [Number],
+    seatNumbers: [String],
     department1: String,
     department2: String,
     year1: String,
@@ -140,7 +141,6 @@ const seatingOrderSchema = {
     columns: String,
     department1rollNumbers:[String],
     department2rollNumbers:[String]
-
 };
 
 const RefconStudent = mongoose.model("RefconStudent", refconStudentSchema);
@@ -154,7 +154,7 @@ const StudentQueue = mongoose.model('StudentQueue', studentQueueSchema);
 const CheckBoolean = mongoose.model('CheckBoolean', checkBooleanSchema);
 const SeatingOrder = mongoose.model('SeatingOrder', seatingOrderSchema);
 
-//Following is created internally in the database:
+//Following is created implicitly in the database:
 // var department = ['CSE', 'EEE', 'ECE', 'MECH', 'CIVIL', 'IT'];
 // var year = ['1', '2', '3', '4'];
 // for(var i=0; i<department.length; i++){

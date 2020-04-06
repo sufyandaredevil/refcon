@@ -6,6 +6,11 @@
 
 <style>
 
+    table, th, tr,td{
+        border: 2px solid #dde2e6;
+        width: 90px;
+    }
+
     .CSE{
         background-color: #eb5d5c;
     }
@@ -13,7 +18,7 @@
         background-color: #68e0e0;
     }
     .CIVIL{
-        background-color: #68e0e0;
+        background-color: #72e06e;
     }
     .EEE{
         background-color: #fae66d;
@@ -35,6 +40,9 @@
         <div class="text-right">
             <a href="/seatingorderspace" style="margin-bottom: 10px; font-size: large; color: white;" class="btn btn-primary">Create Seating Space</a>
         </div>
+        <% if(data.length > 1){%>
+            <div><a class="btn btn-danger" style="margin-bottom: 10px; margin-top: 5px;" href="/seatingorderdelete/seatingOrderDeleteAll"role="button">Delete all</a></div>
+        <% } %>
     <% } %>
 
 
@@ -46,11 +54,35 @@
 
                 <% var rollNumbers = []; var seatTypes = []; var seatNumbers = []; var count=0; for(i=0; i<data[k].rows; i++){ rollNumbers[i] =[];seatTypes[i] = [];seatNumbers[i] = []; for(j=0; j<data[k].columns; j++){ rollNumbers[i][j] =data[k].rollNumbers[count];seatTypes[i][j] =data[k].seatTypes[count];seatNumbers[i][j]=data[k].seatNumbers[count]; count++; } }  %>
 
-                <div class="alert alert-info">
+                <div class="alert alert-info" style="float: left; margin-right: 30px;">
     
                     <div>
-                        <font style="font-weight: bolder;"><%= data[k].block %></font> Block, <font style="font-weight: bolder;"><span style="border-radius: 15%;" class="<%= data[k].department1 %>"><%= data[k].department1 %></span> <%= data[k].year1 %></font> year & <font style="font-weight: bolder;"><span style="border-radius: 15%;" class="<%= data[k].department2 %>"><%= data[k].department2 %></span> <%= data[k].year2 %></font> year, Seating Allocation
+                        Block: <font style="font-weight: bolder;"><%= data[k].block %></font>
+                        <a class="btn btn-outline-danger" style="margin-bottom: 5px; margin-top: 5px;" href="/seatingorderdelete/<%= data[k]._id %>"role="button">Delete</a>
                     </div>
+
+                    <table class="table-responsive">
+                        <tr> 
+                            <td align="center" style="font-size: small;">Session</td> 
+                            <td align="center" style="font-size: small;">Dept / Year</td>
+                            <td align="center" style="font-size: small;">Reg Nos.</th>
+                            <td align="center" style="font-size: small;">Count</td>
+                            <td align="center" style="font-size: small;">Total</td>
+                        </tr> 
+                        <tr> 
+                            <td align="center" rowspan="2"><font style="font-weight: bolder;"><%= data[k].session %></font></td>
+                            <td class="<%= data[k].department1 %>"><font style="color: white;"><%= data[k].department1 %> / <%= data[k].year1 %></font></td> 
+                            <td  class="<%= data[k].department1 %>"style="font-size: smaller;"><font style="color: white; font-weight: bold;"><%= data[k].department1rollNumbers[0].substring(0,9) %></font> <font style="color: white;"><%= data[k].department1rollNumbers[0].substring(9) %> - <%= Number(data[k].department1rollNumbers[data[k].department1rollNumbers.length-1].substring(9)) %></font></td>
+                            <td class="<%= data[k].department1 %>" align="center"><font style="color: white;"><%= data[k].department1rollNumbers.length %></font></td>
+                            <td rowspan="2" align="center"><font style="font-weight: bolder;"><%= data[k].department1rollNumbers.length+data[k].department2rollNumbers.length %></font></td>
+                        </tr> 
+                        <tr> 
+                            <td class="<%= data[k].department2 %>"><font style="color: white;"><%= data[k].department2 %> / <%= data[k].year2 %></font></td> 
+                            <td  class="<%= data[k].department2 %>"style="font-size: smaller;"><font style="color: white; font-weight: bold;"><%= data[k].department2rollNumbers[0].substring(0,9) %></font> <font style="color: white;"><%= data[k].department2rollNumbers[0].substring(9) %> - <%= Number(data[k].department2rollNumbers[data[k].department2rollNumbers.length-1].substring(9)) %></font></td>
+                            <td  class="<%= data[k].department2 %>"align="center"><font style="color: white;"><%= data[k].department2rollNumbers.length %></font></td>
+                        </tr> 
+                    </table> 
+
                     <table class="table table-bordered">
 
                         <% for(i=0; i<data[k].rows; i++){ %>
@@ -59,10 +91,10 @@
 
                                 <% for(j=0; j<data[k].columns; j++) { %>
 
-                                    <% if(rollNumbers[i][j] === 'XXXXXXXXXXXX' ){ %>
-                                        <td style="background-color: grey;">NIL</td>
+                                    <% if(rollNumbers[i][j] === 'XX' ){ %>
+                                        <td style="background-color: grey;">NIL [<%= seatNumbers[i][j] %>]</td>
                                     <% }else{ %>
-                                        <td class="<%= seatTypes[i][j] %>"><%= rollNumbers[i][j].substring(9) %></td>
+                                        <td style="color: white; font-weight: bolder;" class="<%= seatTypes[i][j] %>"><%= Number(rollNumbers[i][j].substring(9)) %><%=" ["+seatNumbers[i][j]+"]" %></td>
                                     <% } %>
 
                                 <% } %>

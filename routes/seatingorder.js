@@ -33,7 +33,7 @@ module.exports = (app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder) 
 
             StudentQueue.find({}, (err, presentData)=> {
 
-                found = false;
+                found = true;
 
                 for(i=0; i<presentData.length; i++){
                     if(presentData[i].unalloc.length != 0){
@@ -274,7 +274,7 @@ module.exports = (app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder) 
                                             rp1++;
                                         }
                                         else{
-                                            tempRollNumbers[subCount].push("XXXXXXXXXXX");
+                                            tempRollNumbers[subCount].push("XX");
                                         }
 
                                     }
@@ -284,7 +284,7 @@ module.exports = (app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder) 
                                             rp2++;
                                         }
                                         else{
-                                            tempRollNumbers[subCount].push("XXXXXXXXXXX");
+                                            tempRollNumbers[subCount].push("XX");
                                         }
                                     }
                                     tempSeatNumbers[subCount].push(seatno++);
@@ -327,6 +327,7 @@ module.exports = (app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder) 
                             department2data.save();
 
                             const newSeatingOrder = new SeatingOrder({
+                                session: req.body.sessionIn,
                                 block: block,
                                 rollNumbers: rollNumbers,
                                 seatTypes: seatTypes,
@@ -363,6 +364,38 @@ module.exports = (app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder) 
 
     });
 
+
+    app.get('/seatingorderdelete/:seatingOrderID', (req, res) => {
+
+        if(!req.session.user){
+            res.render('login', {typerror: "You haven't logged in or your're session might have ended", success: ""});
+        }
+        else if(req.session.user.type === 'teacher'){
+
+            if(req.params.seatingOrderID === 'seatingOrderDeleteAll'){
+
+                res.render('confirm', {message: "Are you sure of deleting all seating spaces?", goback:"seatingorder", commit: "seatingOrderDeleteAll" });
+
+            }
+            else{
+                // delete with specific id and update boolean
+            }
+
+        }
+
+    });
+
+    app.get('/seatingOrderDeleteAll', (req, res) => {
+
+        if(!req.session.user){
+            res.render('login', {typerror: "You haven't logged in or your're session might have ended", success: ""});
+        }
+        else if(req.session.user.type === 'teacher'){
+
+            //delete all and update checkboolean
+        }
+
+    });
 
 };
 
