@@ -11,6 +11,18 @@
         width: 90px;
     }
 
+    table{
+        border-radius: 3%;
+    }
+    
+    .unclick{
+        user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
+    }
+
     .CSE{
         background-color: #eb5d5c;
     }
@@ -31,6 +43,8 @@
     }
 
 </style>
+
+<link rel="stylesheet" href="../css/seatingorder.css">
 
 <div class="container">
 
@@ -54,14 +68,18 @@
 
                 <% var rollNumbers = []; var seatTypes = []; var seatNumbers = []; var count=0; for(i=0; i<data[k].rows; i++){ rollNumbers[i] =[];seatTypes[i] = [];seatNumbers[i] = []; for(j=0; j<data[k].columns; j++){ rollNumbers[i][j] =data[k].rollNumbers[count];seatTypes[i][j] =data[k].seatTypes[count];seatNumbers[i][j]=data[k].seatNumbers[count]; count++; } }  %>
 
-                <div class="alert alert-info" style="float: left; margin-right: 30px;">
+                <div class="alert alert-info" style="float: left; margin-right: 30px;" title="Block: <%= data[k].block %>&#010;Session: <%= data[k].session %>">
     
                     <div>
-                        Block: <font style="font-weight: bolder;"><%= data[k].block %></font>
-                        <a class="btn btn-outline-danger" style="margin-bottom: 5px; margin-top: 5px;" href="/seatingorderdelete/<%= data[k]._id %>"role="button">Delete</a>
+                        Block: <font style="font-weight: bolder; color: #e92843;"><%= data[k].block %></font>
+                    <% if(data.length != 1){ %>
+                            <a class="btn btn-outline-danger" style="margin-bottom: 5px; margin-top: 5px;" href="/seatingorderdelete/<%= data[k]._id %>" role="button">Delete</a>
+                    <% } else{ %>
+                            <a class="btn btn-outline-danger" style="margin-bottom: 5px; margin-top: 5px;" href="/seatingOrderDeleteAll" role="button">Delete</a>
+                    <% } %>
                     </div>
 
-                    <table class="table-responsive">
+                    <table class="table-responsive" style="margin-bottom: 5px;">
                         <tr> 
                             <td align="center" style="font-size: small;">Session</td> 
                             <td align="center" style="font-size: small;">Dept / Year</td>
@@ -70,7 +88,7 @@
                             <td align="center" style="font-size: small;">Total</td>
                         </tr> 
                         <tr> 
-                            <td align="center" rowspan="2"><font style="font-weight: bolder;"><%= data[k].session %></font></td>
+                            <td align="center" rowspan="2"><font style="font-weight: bolder; color: #e92843;"><%= data[k].session %></font></td>
                             <td class="<%= data[k].department1 %>"><font style="color: white;"><%= data[k].department1 %> / <%= data[k].year1 %></font></td> 
                             <td  class="<%= data[k].department1 %>"style="font-size: smaller;"><font style="color: white; font-weight: bold;"><%= data[k].department1rollNumbers[0].substring(0,9) %></font> <font style="color: white;"><%= data[k].department1rollNumbers[0].substring(9) %> - <%= Number(data[k].department1rollNumbers[data[k].department1rollNumbers.length-1].substring(9)) %></font></td>
                             <td class="<%= data[k].department1 %>" align="center"><font style="color: white;"><%= data[k].department1rollNumbers.length %></font></td>
@@ -119,7 +137,57 @@
 
     <% } else if(type === 'student'){ %>
 
+        <% if(data){ %>
 
+            <% var rollNumbers = []; var seatTypes = []; var seatNumbers = []; var count=0; for(i=0; i<data.rows; i++){ rollNumbers[i] =[];seatTypes[i] = [];seatNumbers[i] = []; for(j=0; j<data.columns; j++){ rollNumbers[i][j] =data.rollNumbers[count];seatTypes[i][j] =data.seatTypes[count];seatNumbers[i][j]=data.seatNumbers[count]; count++; } }  %>
+
+            <div class="alert alert-info" style="float: left;">
+
+                <table class="unclick table table-bordered table-hover table-responsive">
+                    <th> Session</th>
+                    <th>Block:</th>
+                    <th>Seat No.</th>
+                    <tr>
+                        <td align="center"><font style="font-weight: bolder;"><%= data.session %></font></td>
+                        <td align="center"><font style="font-weight: bolder;"><%= data.block %></font></td>
+                        <td align="center"><font style="font-weight: bolder;"><%= data.seatNumbers[data.rollNumbers.indexOf(data.thisrollNumber)] %></font></td>
+                    </tr>
+                </table>
+    
+                <table class="unclick table table-bordered">
+    
+                    <% for(i=0; i<data.rows; i++){ %>
+    
+                        <tr>
+    
+                            <% for(j=0; j<data.columns; j++) { %>
+    
+                                <% if(rollNumbers[i][j] === 'XX' ){ %>
+                                    <td style="background-color: grey;">[<%= seatNumbers[i][j] %>]</td>
+                                <% }else{ %>
+                                    <% if(rollNumbers[i][j] === data.thisrollNumber){ %>
+                                        <td id="transitcolor" style="color: white; font-weight: bolder;" class="<%= seatTypes[i][j] %>"><%= Number(rollNumbers[i][j].substring(9)) %><%=" ["+seatNumbers[i][j]+"]" %></td>
+                                    <% } else{%>
+                                        <td style="color: white; font-weight: bolder;" class="<%= seatTypes[i][j] %>">[<%= seatNumbers[i][j] %>]</td>
+                                    <% } %>
+                                <% } %>
+    
+                            <% } %>
+    
+                        </tr>
+    
+                    <% } %>
+    
+                </table>
+            </div>
+
+        <% }else{ %>
+
+            <div class="alert alert-info" style="margin-top: 5px;">
+                <h5>No Seating Space posted </h5>
+            </div>
+
+        <% } %>
 
     <% } %>
 

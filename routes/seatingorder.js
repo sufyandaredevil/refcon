@@ -17,8 +17,34 @@ module.exports = (app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder) 
 
         }
         else if(req.session.user.type === 'student'){
+            SeatingOrder.find({$and: [{$or:[{department1: req.session.user.department}, {department2: req.session.user.department}]},{$or: [{year1: req.session.user.year}, {year2: req.body.year}]}], }, (err, data) => {
 
+                if(data){
 
+                    found = false;
+
+                    for(i=0; i< data.length; i++){
+
+                        if(data[i].rollNumbers.indexOf(req.session.user.rollNumber) != -1){
+                            data[i].thisrollNumber = req.session.user.rollNumber;
+                            res.render('seatingorder', { type: req.session.user.type , data: data[i] });
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if(found === false){
+                        res.render('seatingorder', { type: req.session.user.type , data: undefined });
+                    }
+
+                }
+                else{
+
+                    res.render('seatingorder', { type: req.session.user.type , data: undefined });
+
+                }
+
+            });
 
         }
 
@@ -30,76 +56,30 @@ module.exports = (app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder) 
             res.render('login', {typerror: "You haven't logged in or your're session might have ended", success: ""});
         }
         else if(req.session.user.type === 'teacher'){
-
             StudentQueue.find({}, (err, presentData)=> {
 
-                found = true;
-
+                var found = false;
+                
                 for(i=0; i<presentData.length; i++){
+
                     if(presentData[i].unalloc.length != 0){
                         found = true;
                         break;
                     }
                 }
-
+                
                 if(found === false){
-
-                    CheckBoolean.findOne((err, data)=> {
-                        data.allAllocated = true;
-                        data.save();
-
-                        res.render('sent', {message: 'All students are allocated!', goback: 'seatingorder'});
-                    });
-
+                    res.render('sent', {message: 'All students are allocated!', goback: 'seatingorder'});
                 }
                 else{
-                    CheckBoolean.findOne((err, data) => {
-        
-                        if(data.start === false){
-    
-                            data.start = true;
-                            data.save();
-    
-                            const department = ['CSE', 'EEE', 'ECE', 'MECH', 'MECH', 'CIVIL', 'IT'];
-                            const year = ['1', '2','3', '4'];
-        
-                            for(var i=0; i<department.length; i++){
-                                for(var j=0; j<year.length; j++){
-        
-                                    RefconStudent.find({$and: [{department: department[i]}, {year: year[j]}]}).sort('rollNumber').exec((err, data1) => {
-                                        if(data1.length != 0){
-        
-                                            StudentQueue.findOne({$and: [{department: data1[0].department}, {year: data1[0].year}]}, (err, data2) => {
-        
-                                                for(var k=0; k< data1.length; k++){
-                                                    data2.unalloc.push(data1[k].rollNumber);
-                                                    data2.markModified('unalloc');
-                                                }
-                                                data2.save();
-    
-                                            });
-        
-                                        }
-                                    });
-        
-                                }
-                            }
-                            
-                        }
-                        else{
-                            StudentQueue.find({}).sort("year").exec((err, data) => {
-                                res.render('seatingorderspace', {data: data, typerror: ""});
-                            });
-                        }
-        
+
+                    StudentQueue.find({}).sort("year").exec((err, data) => {
+                        res.render('seatingorderspace', {data: data, typerror: ""});
                     });
-
+                    
                 }
-
             });
-
         }
-
     });
 
     app.post('/seatingorderspace', (req, res) => {
@@ -301,17 +281,6 @@ module.exports = (app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder) 
                                 }
                             }
 
-                            // for(i=0; i<nor; i++){
-                            //     for(j=0; j<noc; j++){
-                            //         process.stdout.write(tempSeatNumbers[i][j]+"/"+tempSeatTypes[i][j]+"/"+tempRollNumbers[i][j]+" ");
-                            //     }
-                            //     console.log();
-                            // }
-
-                            // console.log(seatNumbers);
-                            // console.log(seatTypes);
-                            // console.log(rollNumbers);
-
                             for(i=0; i<dept1unalloc.length; i++){
                                 department1data.alloc.push(department1data.unalloc.shift());
                             }
@@ -378,7 +347,50 @@ module.exports = (app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder) 
 
             }
             else{
-                // delete with specific id and update boolean
+
+                SeatingOrder.findOne({_id: req.params.seatingOrderID}, (err, data) => {
+
+                    //departmentrollNumbers that need to be put into unalloc(sorted(1)) from alloc
+                    const departments = [data.department1, data.department2];
+                    const years = [data.year1, data.year2];
+                    const departmentrollNumbers = [data.department1rollNumbers, data.department2rollNumbers];
+
+                    SeatingOrder.deleteOne({_id: req.params.seatingOrderID}, (err) => {
+
+                        for(let i=0; i<2; i++){
+
+                            StudentQueue.findOne({$and: [{department: departments[i]}, {year: years[i]}]}, (err,d) => {
+    
+                                var newunalloc = [];
+                                var currentunalloc = d.unalloc;
+                                for(let j=0; j<departmentrollNumbers[i].length; j++){
+    
+                                    newunalloc.push((d.alloc.splice( d.alloc.indexOf(departmentrollNumbers[i][j]), 1))[0]);
+    
+                                }
+    
+                                currentunalloc.push(...newunalloc);
+                                currentunalloc = currentunalloc.map(Number);
+                                currentunalloc.sort(function(a, b){return a-b;});
+                                currentunalloc = currentunalloc.map(String);
+    
+                                d.unalloc = [];
+                                d.unalloc.push(...currentunalloc);
+    
+                                d.markModified('unalloc');
+                                d.markModified('alloc');
+                                d.save();
+    
+                            });
+    
+                        }
+
+                        res.redirect('/seatingorder');
+
+                    });
+
+                });
+
             }
 
         }
@@ -392,11 +404,49 @@ module.exports = (app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder) 
         }
         else if(req.session.user.type === 'teacher'){
 
-            //delete all and update checkboolean
+            SeatingOrder.deleteMany({},(err) => {
+
+                const department = ['CSE', 'EEE', 'ECE', 'MECH', 'MECH', 'CIVIL', 'IT'];
+                const year = ['1', '2','3', '4'];
+
+                for(var i=0; i<department.length; i++){
+
+                    for(var j=0; j<year.length; j++){
+
+                        RefconStudent.find({$and: [{department: department[i]}, {year: year[j]}]}).sort('rollNumber').exec((err, data1) => {
+                            if(data1.length != 0){
+
+                                StudentQueue.findOne({$and: [{department: data1[0].department}, {year: data1[0].year}]}, (err, data2) => {
+
+                                    var tempSave = [];
+
+                                    for(var k=0; k< data1.length; k++){
+                                        tempSave.push(data1[k].rollNumber);
+                                        // data2.unalloc.push(data1[k].rollNumber);
+                                        // data2.markModified('unalloc');
+                                    }
+                                    data2.unalloc = tempSave.slice(0,tempSave.length);
+                                    data2.alloc = [];
+                                    data2.markModified('unalloc');
+                                    data2.markModified('alloc');
+                                    data2.save();
+
+                                });
+
+                            }
+                        });
+
+                    }
+                }
+
+                res.redirect('/seatingorder');
+
+            });
+
         }
 
     });
 
 };
 
-//syntax backup {$and: [{$or:[{department: req.body.department1}, {department: req.body.department2}]},{$or: [{year: req.body.year1}, {year: req.body.year2}]}], }
+// syntax backup {$and: [{$or:[{department: req.body.department1}, {department: req.body.department2}]},{$or: [{year: req.body.year1}, {year: req.body.year2}]}], }

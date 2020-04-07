@@ -3,3 +3,4 @@
 (.) when 2 departments are selected then rollnumbers(sorted) are selected from 0th index to nth index assigned by the algorithm sequentially in a queue fashion and modification leads to conflicts
 (.) seating allocation starts from top to bottom, left to right
 (.) only checkboard seating pattern available
+(.) closure needs to be functioned when allocating seats for the first time
