@@ -121,13 +121,8 @@ const studentQueueSchema = {
     alloc: [String]
 };
 
-const checkBooleanSchema = {
-    start: Boolean,
-    allAllocated: Boolean
-};
-
 const seatingOrderSchema = {
-    //block: contains ( department floor hallno )
+    //block: ( department floor hallno )
     session: String,
     block: String,
     rollNumbers: [String],
@@ -151,28 +146,7 @@ const RefconEvent = mongoose.model('RefconEvent', refconEventSchema);
 const RefconExamFee = mongoose.model('RefconExamFee', refconExamFeeSchema);
 const RefconReport = mongoose.model('RefconReport', refconReportSchema);
 const StudentQueue = mongoose.model('StudentQueue', studentQueueSchema);
-const CheckBoolean = mongoose.model('CheckBoolean', checkBooleanSchema);
 const SeatingOrder = mongoose.model('SeatingOrder', seatingOrderSchema);
-
-//Following is created implicitly in the database:
-// var department = ['CSE', 'EEE', 'ECE', 'MECH', 'CIVIL', 'IT'];
-// var year = ['1', '2', '3', '4'];
-// for(var i=0; i<department.length; i++){
-//     for(var j=0; j<year.length; j++){
-//         console.log(department[i] + " " + year[j]);
-//         const dept_year = new StudentQueue({
-//             department: department[i],
-//             year: year[j],
-//         });
-//         dept_year.save();
-//     }
-// }
-// 
-// const checkboolean = new CheckBoolean({
-//     start: false,
-//     allAllocated: false
-// });
-// checkboolean.save();
 
 //User-defined functions:
 var sendDateTime = () => {
@@ -219,7 +193,7 @@ examfee(app, RefconStudent,RefconExamFee);
 examfeepayment(app, request, RefconExamFee);
 report(app, RefconReport, sendDateTime);
 admin(app, md5, RefconTeacher, RefconReport);
-seatingorder(app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder);
+seatingorder(app, RefconStudent, StudentQueue, SeatingOrder);
 
 //=====================================================================================================================
 

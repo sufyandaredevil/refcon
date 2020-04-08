@@ -1,6 +1,6 @@
 //jshint esversion:10
 
-module.exports = (app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder) => {
+module.exports = (app, RefconStudent, StudentQueue, SeatingOrder) => {
 
     app.get('/seatingorder', (req, res) => {
         
@@ -58,26 +58,51 @@ module.exports = (app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder) 
         else if(req.session.user.type === 'teacher'){
             StudentQueue.find({}, (err, presentData)=> {
 
-                var found = false;
-                
-                for(i=0; i<presentData.length; i++){
+                if(presentData.length != 0){
 
-                    if(presentData[i].unalloc.length != 0){
-                        found = true;
-                        break;
-                    }
-                }
+                    var found = false;
                 
-                if(found === false){
-                    res.render('sent', {message: 'All students are allocated!', goback: 'seatingorder'});
+                    for(let i=0; i<presentData.length; i++){
+    
+                        if(presentData[i].unalloc.length != 0){
+                            found = true;
+                            break;
+                        }
+                    }
+                    
+                    if(found === false){
+                        res.render('sent', {message: 'All students are allocated!', goback: 'seatingorder'});
+                    }
+                    else{
+    
+                        StudentQueue.find({}).sort("year").exec((err, data) => {
+                            res.render('seatingorderspace', {data: data, typerror: ""});
+                        });
+                        
+                    }
+
                 }
                 else{
-
-                    StudentQueue.find({}).sort("year").exec((err, data) => {
-                        res.render('seatingorderspace', {data: data, typerror: ""});
-                    });
                     
+                    var department = ['CSE', 'EEE', 'ECE', 'MECH', 'CIVIL', 'IT'];
+                    var year = ['1', '2', '3', '4'];
+
+                    for(var i=0; i<department.length; i++){
+                        for(var j=0; j<year.length; j++){
+                            
+                            const dept_year = new StudentQueue({
+                                department: department[i],
+                                year: year[j],
+                            });
+                            
+                            dept_year.save();
+                        }
+                    }
+
+                    res.redirect('seatingOrderDeleteAll');
+
                 }
+
             });
         }
     });
@@ -406,7 +431,7 @@ module.exports = (app, RefconStudent, StudentQueue, CheckBoolean, SeatingOrder) 
 
             SeatingOrder.deleteMany({},(err) => {
 
-                const department = ['CSE', 'EEE', 'ECE', 'MECH', 'MECH', 'CIVIL', 'IT'];
+                const department = ['CSE', 'EEE', 'ECE', 'MECH', 'CIVIL', 'IT'];
                 const year = ['1', '2','3', '4'];
 
                 for(var i=0; i<department.length; i++){

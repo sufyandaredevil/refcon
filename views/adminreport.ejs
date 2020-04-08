@@ -36,9 +36,7 @@ function loadthisup(nameselect) {
 
     <div onclick="location.href='/adminreport/<%= data[i]._id %>'" class="<%= data[i].fromType %> pxc-subcard unclick"
         onmouseover="this.style.background='#2f6cda';" onmouseout="this.style.background='#387bfe'">
-        <div title="Report Type: <%= data[i].reportType.toUpperCase() %>" class="pxc-title">
-            <% if(data[i].reportType === 'bug'){%> <i class="fa fa-bug"></i> <% } else{ %><i class="fa fa-i-cursor"></i>
-            <% } %> <%= data[i].reportTitle %> </div>
+        <div title="Report Type: <%= data[i].reportType.toUpperCase() %>" class="pxc-title"> <% if(data[i].reportType === 'bug'){%> <i class="fa fa-bug"></i> <% } else if(data[i].reportType === 'change'){ %><i class="fa fa-i-cursor"></i> <% } else if(data[i].reportType === 'general'){ %> <i class="fa fa-info"></i> <% } %> <%= data[i].reportTitle %> </div>
         <div style="word-wrap: break-word;" class="pxc-content">
             <%= data[i].report %>
         </div>
