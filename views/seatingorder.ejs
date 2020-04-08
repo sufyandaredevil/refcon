@@ -141,9 +141,9 @@
 
             <% var sr=""; var sc=""; var rollNumbers = []; var seatTypes = []; var seatNumbers = []; var count=0; for(i=0; i<data.rows; i++){ rollNumbers[i] =[];seatTypes[i] = [];seatNumbers[i] = []; for(j=0; j<data.columns; j++){ rollNumbers[i][j] =data.rollNumbers[count];seatTypes[i][j] =data.seatTypes[count];seatNumbers[i][j]=data.seatNumbers[count]; count++; } }  %>
 
-            <div class="alert alert-info" style="float: left;">
+            <div class="alert alert-info">
 
-                <table class="unclick table table-bordered table-hover table-responsive">
+                <table class="unclick table">
                     <th style="vertical-align : middle; text-align:center;"> Session</th>
                     <th style="vertical-align : middle; text-align:center;">Block</th>
                     <th style="vertical-align : middle; text-align:center;">Seat No.<font style="font-size:small;">[Row , Column]</font></th>
