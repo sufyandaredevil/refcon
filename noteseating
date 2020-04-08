@@ -1,4 +1,4 @@
-(.) students from only 2 different department/year can be allocated and more than 2 department/year can't be done
+(.) only 2 different departments can be allocated in a hall
 (.) only for one seating session
 (.) when 2 departments are selected then rollnumbers(sorted) are selected from 0th index to nth index assigned by the algorithm sequentially in a queue fashion and modification leads to conflicts
 (.) seating allocation starts from top to bottom, left to right

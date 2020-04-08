@@ -126,9 +126,9 @@ module.exports = (app, RefconStudent, StudentQueue, SeatingOrder) => {
                     res.render('seatingorderspace', {data: data, typerror: "Can't select same department and year!"});
                 });
             }
-            else if(req.body.noOfRows === "0" || req.body.noOfColumns === "0"){
+            else if(req.body.noOfRows === "0" || req.body.noOfColumns === "0" || req.body.noOfRows === "1" || req.body.noOfColumns === "1"){
                 StudentQueue.find({}).sort("year").exec((err, data) => {
-                    res.render('seatingorderspace', {data: data, typerror: "Rows and Columns can't be zeroes!"});
+                    res.render('seatingorderspace', {data: data, typerror: "Rows and Columns can't be 0's & 1's"});
                 });
             }
             else{
