@@ -38,7 +38,7 @@
 
 
     <% for(var i=data.length-1; i>=0 ; i--){%>
-    <div title="Branch: <%= data[i].participantType %>&#010;Year: <%= data[i].yearType %>&#010;Event Name: <%= data[i].eventName %>&#010;Venue: <%= data[i].venue %>&#010;Date: <%= data[i].date%>&#010;Time: <%= data[i].time%>&#010;Prizes: <%= data[i].prizes %>&#010;Fee: <%= data[i].fee %>&#010;" onclick="location.href='/event/<%= data[i]._id %>'" class="card <%= data[i].participantType %>">
+    <div <% type ==='teacher'{ %> title="Branch: <%= data[i].participantType %>&#010;Year: <%= data[i].yearType %>&#010;Event Name: <%= data[i].eventName %>&#010;Venue: <%= data[i].venue %>&#010;Date: <%= data[i].date%>&#010;Time: <%= data[i].time%>&#010;Prizes: <%= data[i].prizes %>&#010;Fee: <%= data[i].fee %>&#010;" <%}%> onclick="location.href='/event/<%= data[i]._id %>'" class="card <%= data[i].participantType %>">
 
       <div class="additional" style="margin: 0px;">
 
