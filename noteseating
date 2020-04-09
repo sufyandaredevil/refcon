@@ -1,6 +1,9 @@
 (.) only 2 different departments can be allocated in a hall
-(.) only for one seating session
-(.) when 2 departments are selected then rollnumbers(sorted) are selected from 0th index to nth index assigned by the algorithm sequentially in a queue fashion and modification leads to conflicts
-(.) seating allocation starts from top to bottom, left to right
 (.) only checkboard seating pattern available
-(.) closure needs to be functioned when allocating seats for the first time
+(.) seating allocation starts from top to bottom, left to right
+(.) only for one seating session (i.e.) FN or AN (Simultaneous allocation can be implemented in the future by creating a separate schemas for the second session)
+(.) No of rows or columns should be greater than or equal to 2
+(.) when 2 departments are selected then rollnumbers(sorted) are selected from 0th index to nth index assigned by the algorithm sequentially in a queue fashion and modification leads to conflicts
+(.) closure needs to be activated when allocating seats for the first time
+(.) user needs to make sure that 2 different departments to be paired up on whole because running into cases like only one department is remaining to be allocated and rest all filled(Even when user selects the same department in department1 & 2 raises an error during validation ) cant be resolved using the proposed algorithm.
+(.) if any set of new students have created student account of type 'student', they won't be considered at the time of seat allocating process unless or until the closure is restarted(Restart is done by pressing the delete all button or by deleting the last seating space (if any))

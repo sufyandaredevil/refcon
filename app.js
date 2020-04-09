@@ -24,7 +24,7 @@ app.set('view engine', 'ejs');
 
 //=====================================================================================================================
 //DB Connection and Schema Setup
-mongoose.connect(MONGONLINE, { useNewUrlParser: true, useUnifiedTopology: true} ,(err) => {
+mongoose.connect(MONGOFFLINE, { useNewUrlParser: true, useUnifiedTopology: true} ,(err) => {
     if(err){
         console.log(err);
         }
