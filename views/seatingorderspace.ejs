@@ -88,17 +88,23 @@
               </tr>
               <%}} %>
             </tbody>
+            <span id="infotag" ></span>
           </table>
 
         <form action="/seatingorderspace" method="POST">
 
-            <div class="alert alert-dismissible alert-info" style="margin-top: 10px;" id="infotag">
+            <div class="alert alert-dismissible alert-info unclick" style="margin-top: 10px;">
                 <a title="Close" href="#" class="close" data-dismiss='alert' aria-label="close">&times;</a>
-                <div id="main" style="float: left;;"><i class="fa fa-info-circle" aria-hidden="true"></i> Cascading matters with Departments selection. </div>
-                <div id="clickhere"><a style="text-decoration: none;" href="#infotag" onclick="showdiv()">&nbsp;Click Here</a> to know why</div>
+                <div id="main" style="float: left;"><i class="fa fa-2x fa-info-circle" aria-hidden="true"></i> </div>
+                <div id="clickhere"><a style="text-decoration: none;" href="#infotag" onclick="showdiv()">&nbsp;<font style="font-size: larger;">Click Here</font></a> <font style="font-size: larger;">to read</font></div>
                 <div style="display: none;" id="info">
-                    <li>Seating alternation starts with Department 1 (i.e.) DEPT1, DEPT2, DEPT1,DEPT2,......</li>
-                    <li>If number of rows and columns are odd then Department 1's student count will be greater than Department 2's student count</li>
+                    <li>Make sure of using the table present above to know which department and year and unallocated.</li>
+                    <li>Seating alternation starts with Department, year 1 (i.e.) DEPT1, DEPT2, DEPT1,DEPT2,......</li>
+                    <li>If number of rows and columns are odd then Department 1's student count will be greater than Department 2's student count(assuming both department, year 1 & 2 unallocated count are the same)</li>
+                    <div class="alert alert-danger unclick">
+                        <i class="fa fa-2x fa-exclamation" aria-hidden="true"></i> 
+                        <li style="font-weight: bolder;">Allocation should be done in a manner where the number of remaining rows (i.e.) department, year, No. of students unallocated, No. of students allocated shown above should not be an odd number, else the odd one won't have a pair to allocate seats with.</li>
+                    </div>
                 </div>
             </div>
 
