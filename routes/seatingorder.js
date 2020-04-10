@@ -366,57 +366,48 @@ module.exports = (app, RefconStudent, StudentQueue, SeatingOrder) => {
         }
         else if(req.session.user.type === 'teacher'){
 
-            if(req.params.seatingOrderID === 'seatingOrderDeleteAll'){
+            SeatingOrder.findOne({_id: req.params.seatingOrderID}, (err, data) => {
 
-                res.render('confirm', {message: "Are you sure of deleting all seating spaces?", goback:"seatingorder", commit: "seatingOrderDeleteAll" });
+                //departmentrollNumbers that need to be put into unalloc(sorted(1)) from alloc
+                const departments = [data.department1, data.department2];
+                const years = [data.year1, data.year2];
+                const departmentrollNumbers = [data.department1rollNumbers, data.department2rollNumbers];
 
-            }
-            else{
+                SeatingOrder.deleteOne({_id: req.params.seatingOrderID}, (err) => {
 
-                SeatingOrder.findOne({_id: req.params.seatingOrderID}, (err, data) => {
+                    for(let i=0; i<2; i++){
 
-                    //departmentrollNumbers that need to be put into unalloc(sorted(1)) from alloc
-                    const departments = [data.department1, data.department2];
-                    const years = [data.year1, data.year2];
-                    const departmentrollNumbers = [data.department1rollNumbers, data.department2rollNumbers];
+                        StudentQueue.findOne({$and: [{department: departments[i]}, {year: years[i]}]}, (err,d) => {
 
-                    SeatingOrder.deleteOne({_id: req.params.seatingOrderID}, (err) => {
+                            var newunalloc = [];
+                            var currentunalloc = d.unalloc;
+                            for(let j=0; j<departmentrollNumbers[i].length; j++){
 
-                        for(let i=0; i<2; i++){
+                                newunalloc.push((d.alloc.splice( d.alloc.indexOf(departmentrollNumbers[i][j]), 1))[0]);
 
-                            StudentQueue.findOne({$and: [{department: departments[i]}, {year: years[i]}]}, (err,d) => {
-    
-                                var newunalloc = [];
-                                var currentunalloc = d.unalloc;
-                                for(let j=0; j<departmentrollNumbers[i].length; j++){
-    
-                                    newunalloc.push((d.alloc.splice( d.alloc.indexOf(departmentrollNumbers[i][j]), 1))[0]);
-    
-                                }
-    
-                                currentunalloc.push(...newunalloc);
-                                currentunalloc = currentunalloc.map(Number);
-                                currentunalloc.sort(function(a, b){return a-b;});
-                                currentunalloc = currentunalloc.map(String);
-    
-                                d.unalloc = [];
-                                d.unalloc.push(...currentunalloc);
-    
-                                d.markModified('unalloc');
-                                d.markModified('alloc');
-                                d.save();
-    
-                            });
-    
-                        }
+                            }
 
-                        res.redirect('/seatingorder');
+                            currentunalloc.push(...newunalloc);
+                            currentunalloc = currentunalloc.map(Number);
+                            currentunalloc.sort(function(a, b){return a-b;});
+                            currentunalloc = currentunalloc.map(String);
 
-                    });
+                            d.unalloc = [];
+                            d.unalloc.push(...currentunalloc);
+
+                            d.markModified('unalloc');
+                            d.markModified('alloc');
+                            d.save();
+
+                        });
+
+                    }
+
+                    res.redirect('/seatingorder');
 
                 });
 
-            }
+            });
 
         }
 

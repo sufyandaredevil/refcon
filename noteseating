@@ -1,5 +1,5 @@
-(.) only 2 different departments can be allocated in a hall
-(.) only checkboard seating pattern available
+(.) the 2 departments and years that the user selects must not be the same
+(.) only checkboard seating pattern is available
 (.) seating allocation starts from top to bottom, left to right
 (.) only for one seating session (i.e.) FN or AN (Simultaneous allocation can be implemented in the future by creating a separate schemas for the second session)
 (.) No of rows or columns should be greater than or equal to 2
