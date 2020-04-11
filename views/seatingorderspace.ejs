@@ -32,7 +32,25 @@
 
     function showNoOfStudentsAndInfo(){
 
-        if(document.getElementById("noOfRows").value != "" && document.getElementById("noOfColumns").value != ""){
+// if(Number(document.getElementById("noOfRows").value) === 0 || Number(document.getElementById("noOfColumns").value) === 0 || Number(document.getElementById("noOfRows").value) === 1 || Number(document.getElementById("noOfColumns").value) === 1)
+
+        if(Number(document.getElementById("noOfRows").value) === 0 || Number(document.getElementById("noOfColumns").value) === 0 || Number(document.getElementById("noOfRows").value) === 1 || Number(document.getElementById("noOfColumns").value) === 1){
+            if(document.getElementById("noOfRows").value !== "" && document.getElementById("noOfColumns").value !== ""){
+                document.getElementById("noOfStudentsInfoDanger").innerHTML = "Rows, Columns should be greater than 1";
+                document.getElementById('noOfStudentsInfoDanger').style.display = "block";
+                document.getElementById('noOfStudentsInfo').style.display = "none";
+                document.getElementById('createButton').style.display = "none";
+                document.getElementById("forFocus").focus();
+
+            }
+            else{
+                document.getElementById('noOfStudentsInfo').style.display = "none";
+                document.getElementById('noOfStudentsInfoDanger').style.display = "none";
+                document.getElementById('createButton').style.display = "none";
+                document.getElementById("forFocus").focus();
+            }
+        }
+        else if(document.getElementById("noOfRows").value != "" && document.getElementById("noOfColumns").value != ""){
 
             var noOfstudentsInDept1="";
             var noOfstudentsInDept2="";
@@ -50,9 +68,13 @@
 
             document.getElementById('noOfStudentsInfo').innerHTML = 'Maximum of <font style="font-weight:bolder;">'+String(multipliedNo)+ '</font>' +" students can be allocated"+textInfo;
             document.getElementById('noOfStudentsInfo').style.display = "block";
+            document.getElementById('noOfStudentsInfoDanger').style.display = "none";
+            document.getElementById('createButton').style.display = "block";
+            document.getElementById("forFocus").focus();
         }
         else{
             document.getElementById('noOfStudentsInfo').style.display = "none";
+            document.getElementById("forFocus").focus();
         }
 
     }
@@ -183,10 +205,14 @@
                 </tr>
             </table>
 
+            <div style="display: none;" class="alert alert-danger" id="noOfStudentsInfoDanger">
+            </div>
+
             <div style="display: none;" class="alert alert-info" id="noOfStudentsInfo">
             </div>
 
-            <button style="margin-top: 7px;" class="btn btn-primary" type="submit"> Create </button>
+            <button style="margin-top: 7px;" id="createButton" class="btn btn-primary" type="submit"> Create </button>
+            <span id="forFocus"></span>
         </form>
 
     </div>

@@ -67,29 +67,43 @@ module.exports = (app, RefconStudent, RefconInternalMark) => {
             
             const rollNumbers = [];
 
-            RefconStudent.find({$and: [{department: department}, {year: year}]}).sort('rollNumber').exec((err, data) => {
-                if(data.length != 0){
-                    for(var i=0; i<data.length; i++){
-                        rollNumbers.push(data[i].rollNumber);
-                    }
+            RefconInternalMark.findOne({$and: [{department: department}, {year: year}, {internalNumber: internalNumber}, {subjectName: subjectName}, {subjectCode: subjectCode}, {semester: semester}, {facultyid: facultyid} ]}, (err, d) => {
 
-                    const newRefconInternalMark = new RefconInternalMark({
-                        internalNumber: internalNumber,
-                        department: department,
-                        subjectName: subjectName,
-                        subjectCode: subjectCode,
-                        year: year,
-                        semester: semester,
-                        facultyid: facultyid,
-                    });
-                    newRefconInternalMark.save((err, data) => {
-                        res.render('internalmarktable', {semester: semester, id: data._id, subjectName: subjectName, department: department.toUpperCase(), year: year, internalNumber: internalNumber, rollNumbers: rollNumbers});                    
-                    });
+                if(d){
+
+                    res.render('internalmarkspace',{ typerror: `${subjectName}(${subjectCode}) Mark Space already exists!` });
+
                 }
                 else{
-                    res.render('internalmarkspace',{ typerror: "No students found for the given Department and Year" });
+
+                    RefconStudent.find({$and: [{department: department}, {year: year}]}).sort('rollNumber').exec((err, data) => {
+                        if(data.length != 0){
+                            for(var i=0; i<data.length; i++){
+                                rollNumbers.push(data[i].rollNumber);
+                            }
+        
+                            const newRefconInternalMark = new RefconInternalMark({
+                                internalNumber: internalNumber,
+                                department: department,
+                                subjectName: subjectName,
+                                subjectCode: subjectCode,
+                                year: year,
+                                semester: semester,
+                                facultyid: facultyid,
+                            });
+                            newRefconInternalMark.save((err, data) => {
+                                res.render('internalmarktable', {semester: semester, id: data._id, subjectName: subjectName, department: department.toUpperCase(), year: year, internalNumber: internalNumber, rollNumbers: rollNumbers});                    
+                            });
+                        }
+                        else{
+                            res.render('internalmarkspace',{ typerror: "No students found for the given Department and Year" });
+                        }
+                    });
+
                 }
+
             });
+
         }
     });
 

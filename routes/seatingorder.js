@@ -126,11 +126,6 @@ module.exports = (app, RefconStudent, StudentQueue, SeatingOrder) => {
                     res.render('seatingorderspace', {data: data, typerror: "Can't select same department and year!"});
                 });
             }
-            else if(req.body.noOfRows === "0" || req.body.noOfColumns === "0" || req.body.noOfRows === "1" || req.body.noOfColumns === "1"){
-                StudentQueue.find({}).sort("year").exec((err, data) => {
-                    res.render('seatingorderspace', {data: data, typerror: "Rows and Columns can't be 0's & 1's"});
-                });
-            }
             else{
 
                 const department1 = req.body.department1;
@@ -181,8 +176,6 @@ module.exports = (app, RefconStudent, StudentQueue, SeatingOrder) => {
                                 if( department2data.unalloc[j] != undefined ){ dept2unalloc.push(department2data.unalloc[j]); }
                                 else{ break; }
                             }
-
-                            // console.log("______________________________________________________________________________________________________");
 
                             var tempSeatTypes = [];
 
@@ -263,9 +256,6 @@ module.exports = (app, RefconStudent, StudentQueue, SeatingOrder) => {
                             var rp1 = 0;
                             var rp2 = 0;
                             var seatno = 1;
-
-                            // console.log(dept1unalloc);
-                            // console.log(dept2unalloc);
 
                             for(i=0; i<noc; i++){
 
