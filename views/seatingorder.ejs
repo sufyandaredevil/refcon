@@ -6,13 +6,14 @@
 
 <style>
 
-    <% if(data.length > 1 && type === 'teacher'){ %>
-         
-    #myModal {
-        top:9%;
-        right:50%;
-        outline: none;
-    }
+    <% if(type === 'teacher'){ %>
+        <% if(data.length > 1){ %>
+         #myModal {
+             top:9%;
+             right:50%;
+             outline: none;
+         }
+         <% } %>
     <% } %>
 
     table, th, tr,td{
@@ -140,9 +141,9 @@
                                 <% for(j=0; j<data[k].columns; j++) { %>
 
                                     <% if(data[k].rollNumbers[c] === 'XX' ){ %>
-                                        <td style="background-color: grey;">NIL [<%= data[k].seatNumbers[c] %>]</td>
+                                        <td class="unclick" style="vertical-align: middle; text-align: center; background-color: rgba(0, 0, 0, 0.3);color: rgba(255, 255, 255, 0.2);">[<%= data[k].seatNumbers[c] %>]</td>
                                     <% }else{ %>
-                                        <td style="color: white; font-weight: bolder;" class="<%= data[k].seatTypes[c] %>"><%= Number(data[k].rollNumbers[c].substring(9)) %><%=" ["+data[k].seatNumbers[c]+"]" %></td>
+                                        <td style="vertical-align: middle; text-align: center; color: white; font-weight: bolder;" class="<%= data[k].seatTypes[c] %>"><%= Number(data[k].rollNumbers[c].substring(9)) %><%=" ["+data[k].seatNumbers[c]+"]" %></td>
                                     <% } %>
 
                                 <% c++; } %>
@@ -189,9 +190,9 @@
                         <% for(j = 0; j < data.columns; j++){ %>
 
                         <% if(data.rollNumbers[c] === data.thisrollNumber){ sr=i+1;sc=j+1; %>
-                            <td id="transitcolor" style="color: white; font-weight: bolder;" class="<%= data.seatTypes[c] %>"><%= Number(data.rollNumbers[c].substring(9)) %><%=" ["+data.seatNumbers[c]+"]" %></td>
+                            <td style="font-size: larger; vertical-align: middle; text-align: center; font-weight: bolder;" id="transitcolor" style="color: white;" class="<%= data.seatTypes[c] %>"><%=" ["+data.seatNumbers[c]+"]" %></td>
                         <% } else{%>
-                            <td style="color: white; font-weight: bolder;" class="<%= data.seatTypes[c] %>">[<%= data.seatNumbers[c] %>]</td>
+                            <td style="vertical-align: middle; text-align: center; color: rgba(255, 255, 255, 0.5);" class="<%= data.seatTypes[c] %>">[<%= data.seatNumbers[c] %>]</td>
                         <% } %>
 
                         <% c++; } %>

@@ -46,7 +46,7 @@
 
                 noOfstudentsInDept1 = Math.round(multipliedNo/2);
                 noOfstudentsInDept2 = Math.floor(multipliedNo/2);
-                textInfo = '<br><ul><li>Number of Students in '+dispdept1+', '+dispyear1+' year: '+noOfstudentsInDept1+'</li><li>Number of Students in '+dispdept2+', '+dispyear2+' year: '+noOfstudentsInDept2+'</li>';
+                textInfo = '<br><ul><li>Number of Students in <font style="font-weight: bolder;">'+dispdept1+'</font>, <font style="font-weight: bolder;">'+dispyear1+'</font> year: <font style="font-weight: bolder;">'+noOfstudentsInDept1+'</font></li><li>Number of Students in <font style="font-weight: bolder;">'+dispdept2+'</font>, <font style="font-weight: bolder;">'+dispyear2+'</font> year: <font style="font-weight: bolder;">'+noOfstudentsInDept2+'</font></li>';
 
             document.getElementById('noOfStudentsInfo').innerHTML = 'Maximum of <font style="font-weight:bolder;">'+String(multipliedNo)+ '</font>' +" students can be allocated"+textInfo;
             document.getElementById('noOfStudentsInfo').style.display = "block";
@@ -98,12 +98,13 @@
                 <div id="main" style="float: left;"><i class="fa fa-2x fa-info-circle" aria-hidden="true"></i> </div>
                 <div id="clickhere"><a style="text-decoration: none;" href="#infotag" onclick="showdiv()">&nbsp;<font style="font-size: larger;">Click Here</font></a> <font style="font-size: larger;">to read</font></div>
                 <div style="display: none;" id="info">
-                    <li>Make sure of using the table present above to know which department and year and unallocated.</li>
+                    <li>Make sure of using the <font style="font-weight: bolder;">Reference table</font> present above to know which department and year are unallocated.</li>
                     <li>Seating alternation starts with Department, year 1 (i.e.) DEPT1, DEPT2, DEPT1,DEPT2,......</li>
                     <li>If number of rows and columns are odd then Department 1's student count will be greater than Department 2's student count(assuming both department, year 1 & 2 unallocated count are the same)</li>
+                    <li>If students from a specific department and year are all allocated(if No. of students unallocated is 0) it won't be shown in the Reference table</li>
                     <div class="alert alert-danger unclick">
                         <i class="fa fa-2x fa-exclamation" aria-hidden="true"></i> 
-                        <li style="font-weight: bolder;">Allocation should be done in a manner where the number of remaining rows (i.e.) department, year, No. of students unallocated, No. of students allocated shown above should not be an odd number, else the odd one won't have a pair to allocate seats with.</li>
+                        <li style="font-weight: bolder;">Allocation should be done in a manner where the number of remaining rows in the Reference table should not be an odd number, else the odd one won't have a pair to allocate seats with.</li>
                     </div>
                 </div>
             </div>
