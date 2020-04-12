@@ -13,3 +13,31 @@
 #transitcolor {
   -webkit-animation: color_change 0.3s infinite alternate;
 }
+
+table, th, tr,td{
+  border: 2px solid #dde2e6;
+  width: 90px;
+}
+
+table{
+  border-radius: 3%;
+}
+
+.CSE{
+  background-color: #eb5d5c;
+}
+.IT{
+  background-color: #68e0e0;
+}
+.CIVIL{
+  background-color: #72e06e;
+}
+.EEE{
+  background-color: #fae66d;
+}
+.ECE{
+  background-color: #8793fe;
+}
+.MECH{
+  background-color: #bc85fa;
+}

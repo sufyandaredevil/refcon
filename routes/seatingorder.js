@@ -453,6 +453,51 @@ module.exports = (app, RefconStudent, StudentQueue, SeatingOrder) => {
 
     });
 
+    app.get('/seatingorderfind', (req, res) => {
+
+        if(req.session.user){
+
+            if(req.session.user.type === 'teacher'){
+                res.render('seatingorderfind', {found: "", data: undefined, rollNumber: ""});
+            }
+
+        }
+        else{
+
+            res.render('login', {typerror: "You haven't logged in or your're session might have ended", success: ""});
+        }
+
+    });
+
+
+    app.post('/seatingorderfind', (req, res) => {
+
+        SeatingOrder.find({}, (err, data) => {
+
+            var found = "false";
+
+            for(let i = 0 ; i < data.length; i++){
+
+                if(data[i].rollNumbers.includes(req.body.rollNumber)){
+
+                    res.render('seatingorderfind', {found: "true", data: data[i], rollNumber: req.body.rollNumber});
+                    found = "true";
+                    break;
+
+                }
+
+            }
+
+            if(found === 'false'){
+                res.render('seatingorderfind', {found: "false", data: undefined, rollNumber: ''});
+            }
+
+
+        });
+
+    });
+
+
 };
 
 // syntax backup {$and: [{$or:[{department: req.body.department1}, {department: req.body.department2}]},{$or: [{year: req.body.year1}, {year: req.body.year2}]}], }

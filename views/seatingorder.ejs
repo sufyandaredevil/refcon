@@ -15,15 +15,6 @@
          }
          <% } %>
     <% } %>
-
-    table, th, tr,td{
-        border: 2px solid #dde2e6;
-        width: 90px;
-    }
-
-    table{
-        border-radius: 3%;
-    }
     
     .unclick{
         user-select: none;
@@ -31,25 +22,6 @@
         -khtml-user-select: none;
         -webkit-user-select: none;
         -o-user-select: none;
-    }
-
-    .CSE{
-        background-color: #eb5d5c;
-    }
-    .IT{
-        background-color: #68e0e0;
-    }
-    .CIVIL{
-        background-color: #72e06e;
-    }
-    .EEE{
-        background-color: #fae66d;
-    }
-    .ECE{
-        background-color: #8793fe;
-    }
-    .MECH{
-        background-color: #bc85fa;
     }
 
 </style>
@@ -63,7 +35,13 @@
     <% if(type === 'teacher'){ %>
         <div class="text-right">
             <a href="/seatingorderspace" style="margin-bottom: 10px; font-size: large; color: white;" class="btn btn-primary">Create Seating Space</a>
+            <% if(data.length != 0) {%>
+                <a href="/seatingorderfind" style="margin-bottom: 10px; font-size: large; color: white;" class="btn btn-primary">Find Student's Seat</a>
+            <% } %>
         </div>
+
+
+
         <% if(data.length > 1){ %>
             <div>
 
@@ -119,16 +97,16 @@
                             <td align="center" style="font-size: small;">Total</td>
                         </tr> 
                         <tr> 
-                            <td style="vertical-align : middle;text-align:center;" rowspan="2"><font style="font-size: larger; font-weight: bolder; color: #e92843;"><%= data[k].session %></font></td>
-                            <td class="<%= data[k].department1 %>"><font style="color: white;"><%= data[k].department1 %> / <%= data[k].year1 %></font></td> 
-                            <td  class="<%= data[k].department1 %>"style="font-size: smaller;"><font style="color: white; font-weight: bold;"><%= data[k].department1rollNumbers[0].substring(0,9) %></font> <font style="color: white;"><%= data[k].department1rollNumbers[0].substring(9) %> - <%= Number(data[k].department1rollNumbers[data[k].department1rollNumbers.length-1].substring(9)) %></font></td>
-                            <td class="<%= data[k].department1 %>" align="center"><font style="color: white;"><%= data[k].department1rollNumbers.length %></font></td>
-                            <td style="vertical-align : middle;text-align:center;" rowspan="2"><font style="font-size: larger; font-weight: bolder;"><%= data[k].department1rollNumbers.length+data[k].department2rollNumbers.length %></font></td>
+                            <td style="vertical-align : middle;text-align:center;" rowspan="2"><font style="font-size: 25px; font-weight: bolder; color: #e92843;"><%= data[k].session %></font></td>
+                            <td style="vertical-align : middle;text-align:center;" class="<%= data[k].department1 %>"><font style="font-weight: bolder; color: white;"><%= data[k].department1 %> / <%= data[k].year1 %></font></td> 
+                            <td style="vertical-align : middle;text-align:center;" class="<%= data[k].department1 %>"style="font-size: smaller;"><font style="color: white; font-weight: bold;"><%= data[k].department1rollNumbers[0].substring(0,9) %></font> <font style="color: white;"><%= data[k].department1rollNumbers[0].substring(9) %> - <%= Number(data[k].department1rollNumbers[data[k].department1rollNumbers.length-1].substring(9)) %></font></td>
+                            <td style="vertical-align : middle;text-align:center;" class="<%= data[k].department1 %>" align="center"><font style="font-weight: bolder; color: white;"><%= data[k].department1rollNumbers.length %></font></td>
+                            <td style="vertical-align : middle;text-align:center;" rowspan="2"><font style="font-size: 25px; font-weight: bolder;"><%= data[k].department1rollNumbers.length+data[k].department2rollNumbers.length %></font></td>
                         </tr> 
                         <tr> 
-                            <td class="<%= data[k].department2 %>"><font style="color: white;"><%= data[k].department2 %> / <%= data[k].year2 %></font></td> 
-                            <td  class="<%= data[k].department2 %>"style="font-size: smaller;"><font style="color: white; font-weight: bold;"><%= data[k].department2rollNumbers[0].substring(0,9) %></font> <font style="color: white;"><%= data[k].department2rollNumbers[0].substring(9) %> - <%= Number(data[k].department2rollNumbers[data[k].department2rollNumbers.length-1].substring(9)) %></font></td>
-                            <td  class="<%= data[k].department2 %>"align="center"><font style="color: white;"><%= data[k].department2rollNumbers.length %></font></td>
+                            <td style="vertical-align : middle;text-align:center;" class="<%= data[k].department2 %>"><font style="font-weight: bolder; color: white;"><%= data[k].department2 %> / <%= data[k].year2 %></font></td> 
+                            <td style="vertical-align : middle;text-align:center;" class="<%= data[k].department2 %>"style="font-size: smaller;"><font style="color: white; font-weight: bold;"><%= data[k].department2rollNumbers[0].substring(0,9) %></font> <font style="color: white;"><%= data[k].department2rollNumbers[0].substring(9) %> - <%= Number(data[k].department2rollNumbers[data[k].department2rollNumbers.length-1].substring(9)) %></font></td>
+                            <td style="vertical-align : middle;text-align:center;" class="<%= data[k].department2 %>"align="center"><font style="font-weight: bolder; color: white;"><%= data[k].department2rollNumbers.length %></font></td>
                         </tr> 
                     </table> 
 

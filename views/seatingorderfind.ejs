@@ -1,0 +1,118 @@
+<%- include("navbaronly"); -%>
+
+<title>
+    REFCON - Find Student's Seat
+</title>
+
+<style>
+
+    .form-signin {
+        width: 100%;
+        max-width: 450px;
+        padding: 15px;
+    }
+
+    .unclick{
+        user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
+    }
+
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        }
+    
+</style>
+
+<link rel="stylesheet" href="../css/seatingorder.css">
+
+<div class="container">
+
+    <a style="margin-left: 15px; margin-top: 20px;" href="/seatingorder" class="btn btn-outline-primary" role="button"><i class="fa fa-arrow-left"></i></a>
+
+    <form class="form-signin" action="/seatingorderfind" method="POST" style="margin-bottom: -20px;">
+
+        <div class="input-group mb-3">
+            <input name="rollNumber" value="<%=rollNumber%>" type="number" class="form-control" placeholder="Enter Student's Roll Number:" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="submit">Find</button>
+            </div>
+          </div>
+    </form>
+
+        <% if(found === "true"){ %>
+
+            <div style="margin-left: 15px;" class="alert alert-info" title="Block: <%= data.block %>&#010;Session: <%= data.session %>">
+    
+                <div title="Roll Number: <%= rollNumber %>&#010;[Seat Number]: <%=sn%>&#010;(Row, Column): <%= sr %>,<%= sc %>">
+                    <font style="font-weight: bolder;"><%= rollNumber %></font> in: <font style="font-size: medium; font-weight: bolder; color: #e92843;"><%= data.block %> </font>
+                    <div>
+                        <span id="inhere"></span>
+                    </div>
+                </div>
+
+
+                <table class="table table-sm" style="margin-bottom: 5px;">
+                    <tr> 
+                        <td align="center" style="font-size: small;">Session</td> 
+                        <td align="center" style="font-size: small;">Dept / Year</td>
+                        <td align="center" style="font-size: small;">Reg Nos.</th>
+                        <td align="center" style="font-size: small;">Count</td>
+                        <td align="center" style="font-size: small;">Total</td>
+                    </tr> 
+                    <tr> 
+                        <td style="vertical-align : middle;text-align:center;" rowspan="2"><font style="font-size: 20px; font-weight: bolder; color: #e92843;"><%= data.session %></font></td>
+                        <td style="vertical-align : middle;text-align:center;" class="<%= data.department1 %>"><font style="font-weight: bolder; color: white;"><%= data.department1 %> / <%= data.year1 %></font></td> 
+                        <td style="vertical-align : middle;text-align:center;" class="<%= data.department1 %>"style="font-size: smaller;"><font style="color: white; font-weight: bold;"><%= data.department1rollNumbers[0].substring(0,9) %></font> <font style="color: white;"><%= data.department1rollNumbers[0].substring(9) %> - <%= Number(data.department1rollNumbers[data.department1rollNumbers.length-1].substring(9)) %></font></td>
+                        <td style="vertical-align : middle;text-align:center;" class="<%= data.department1 %>" align="center"><font style="font-weight: bolder; color: white;"><%= data.department1rollNumbers.length %></font></td>
+                        <td style="vertical-align : middle;text-align:center;" rowspan="2"><font style="font-size: 20px; font-weight: bolder;"><%= data.department1rollNumbers.length+data.department2rollNumbers.length %></font></td>
+                    </tr> 
+                    <tr> 
+                        <td style="vertical-align : middle;text-align:center;" class="<%= data.department2 %>"><font style="font-weight: bolder; color: white;"><%= data.department2 %> / <%= data.year2 %></font></td> 
+                        <td style="vertical-align : middle;text-align:center;" class="<%= data.department2 %>"style="font-size: smaller;"><font style="color: white; font-weight: bold;"><%= data.department2rollNumbers[0].substring(0,9) %></font> <font style="color: white;"><%= data.department2rollNumbers[0].substring(9) %> - <%= Number(data.department2rollNumbers[data.department2rollNumbers.length-1].substring(9)) %></font></td>
+                        <td style="vertical-align : middle;text-align:center;" class="<%= data.department2 %>"align="center"><font style="font-weight: bolder; color: white;"><%= data.department2rollNumbers.length %></font></td>
+                    </tr> 
+                </table> 
+
+                <table class="table table-sm table-bordered">
+
+                    <% var c=0; for(i=0; i<data.rows; i++){ %>
+
+                        <tr>
+
+                            <% for(j=0; j<data.columns; j++) { %>
+
+                                <% if(data.rollNumbers[c] === 'XX' ){ %>
+                                    <td class="unclick" style="vertical-align: middle; text-align: center; background-color: rgba(0, 0, 0, 0.3);color: rgba(255, 255, 255, 0.2);">[<%= data.seatNumbers[c] %>]</td>
+                                <% }else if(data.rollNumbers[c] === rollNumber){ sr=i+1;sc=j+1;sn=data.seatNumbers[c];%>
+                                    <td id="transitcolor" style="vertical-align: middle; text-align: center; color: white; font-weight: bolder;" class="<%= data.seatTypes[c] %>"><%= Number(data.rollNumbers[c].substring(9)) %><%=" ["+data.seatNumbers[c]+"]" %></td>
+                                <% }else {%>
+                                    <td style="vertical-align: middle; text-align: center; color: white; font-weight: bolder;" class="<%= data.seatTypes[c] %>"><%= Number(data.rollNumbers[c].substring(9)) %><%=" ["+data.seatNumbers[c]+"]" %></td>                                    
+                                <%}%>
+
+                            <% c++; } %>
+
+                        </tr>
+
+                    <% } %>
+
+                    <script>
+                        document.getElementById('inhere').innerHTML = "[<font style='font-weight: bolder;'>"+"<%=sn%>"+"</font>] (<font style='font-weight:bolder;'>"+"<%=sr%>"+"</font> , <font style='font-weight:bolder;'>"+"<%=sc%>"+"</font>)";
+                    </script>
+
+                </table>
+
+            </div>
+
+        <% } else if(found === 'false'){%>
+            <form action="" class="form-signin" >
+                <div class="alert alert-danger">Student hasn't been allocated!</div>
+            <div></div>
+            </form>
+            <% } %>
+
+
+</div>
