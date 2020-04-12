@@ -489,7 +489,7 @@ module.exports = (app, RefconStudent, StudentQueue, SeatingOrder) => {
             }
 
             if(found === 'false'){
-                res.render('seatingorderfind', {found: "false", data: undefined, rollNumber: ''});
+                res.render('seatingorderfind', {found: "false", data: undefined, rollNumber: req.body.rollNumber});
             }
 
 
