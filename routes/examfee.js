@@ -56,34 +56,46 @@ module.exports = (app, RefconStudent, RefconExamFee) => {
             var rollNumbers = [];
             var phoneNumbers = [];
 
-            RefconStudent.find({$and: [{department: department}, {year: year}]}).sort('rollNumber').exec((err, data) => {
-                if(data.length != 0){
-                    for(var i=0; i<data.length; i++){
-                        rollNumbers.push(data[i].rollNumber);
-                        phoneNumbers.push(data[i].phoneNumber);
-                    }
-
-                    var isPaid = new Array(rollNumbers.length);
-                    isPaid.fill("");
-
-                    const newRefconExamFee = new RefconExamFee({
-                        semesterNumber: semesterNumber,
-                        department: department,
-                        year: year,
-                        isPaid: isPaid,
-                        currentSemesterSubjectCount: currentSemesterSubjectCount,
-                        facultyid: facultyid,
-                        rollNumbers: rollNumbers,
-                        phoneNumbers: phoneNumbers,
-                    });
-                    newRefconExamFee.save((err, data) => {
-                        res.render('examfeetable', {semesterNumber: semesterNumber, currentSemesterSubjectCount: currentSemesterSubjectCount,id: data._id, department: department, year: year, rollNumbers: rollNumbers});                    
-                    });
+            RefconExamFee.findOne({$and: [{department: department}, {year: year}]}, (err, d) => {
+                
+                if(d){
+                    res.render('examfeespace',{ typerror: `${department}, ${year} year Payment Space already exists!` });
                 }
                 else{
-                    res.render('examfeespace',{ typerror: "No students found for the given Department and Year" });
+
+                    RefconStudent.find({$and: [{department: department}, {year: year}]}).sort('rollNumber').exec((err, data) => {
+                        if(data.length != 0){
+                            for(var i=0; i<data.length; i++){
+                                rollNumbers.push(data[i].rollNumber);
+                                phoneNumbers.push(data[i].phoneNumber);
+                            }
+        
+                            var isPaid = new Array(rollNumbers.length);
+                            isPaid.fill("");
+        
+                            const newRefconExamFee = new RefconExamFee({
+                                semesterNumber: semesterNumber,
+                                department: department,
+                                year: year,
+                                isPaid: isPaid,
+                                currentSemesterSubjectCount: currentSemesterSubjectCount,
+                                facultyid: facultyid,
+                                rollNumbers: rollNumbers,
+                                phoneNumbers: phoneNumbers,
+                            });
+                            newRefconExamFee.save((err, data) => {
+                                res.render('examfeetable', {semesterNumber: semesterNumber, currentSemesterSubjectCount: currentSemesterSubjectCount,id: data._id, department: department, year: year, rollNumbers: rollNumbers});                    
+                            });
+                        }
+                        else{
+                            res.render('examfeespace',{ typerror: "No students found for the given Department and Year" });
+                        }
+                    });
+
                 }
+
             });
+
         }
     });
 
