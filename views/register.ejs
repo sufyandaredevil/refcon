@@ -11,9 +11,11 @@
   <link href="../../css/login.css" rel="stylesheet">
   <link rel="icon" href="../imgs/refcon.svg" type="image/svg">
 
-  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-
   <style>
+    .ui-datepicker-calendar {
+      display: none;
+    }
+
     .box {
       display: none;
     }
@@ -28,27 +30,13 @@
     }
   </style>
 
-  <script>
-    $(document).ready(function () {
-      $("select").change(function () {
-        $(this).find("option:selected").each(function () {
-          var optionValue = $(this).attr("value");
-          if (optionValue) {
-            $(".box").not("." + optionValue).hide();
-            $("." + optionValue).show();
-          } else {
-            $(".box").hide();
-          }
-        });
-      }).change();
-    });
-  </script>
+  <script src="../js/register.js"></script>
 
 </head>
 
 <body class="text-center">
 
-  <form class="form-signin" action="/register" method="POST">
+  <form class="form-signin" action="/register" method="POST" id="myForm">
 
     <img class="mb-4" src="../../imgs/refcon.svg" alt="" width="125" height="125">
 
@@ -58,8 +46,8 @@
     <div class="alert alert-danger"><%= typerror %></div>
     <%}%>
 
-    <select class="form-control" name="type" required>
-      <option>Who are you ?</option>
+    <select onchange="showParFields()" class="form-control" id="type" name="type" required>
+      <option selected disabled>Who are you ?</option>
       <option value="student">Student</option>
       <option value="teacher">Teacher</option>
     </select>
@@ -70,13 +58,27 @@
 
     <input type="text" name="collegeName" class="form-control" placeholder="College Name" required="">
 
-    <div class="student box">
-      <input type="text" name="rollNumber" class="form-control" placeholder="Student Roll Number">
-      <input type="text" name="department" class="form-control" placeholder="Department">
-      <input type="text" name="year" maxlength="1" class="form-control" placeholder="Year">
+    <div style="display: none;" id="student" class="student">
+
+      <input required type="text" id="yearOfJoining" name="yearOfJoining" class="form-control" placeholder="Year of Joining (YYYY)" minlength="4" maxlength="4">
+
+      <input required type="text" id="rollNumber" name="rollNumber" class="form-control" placeholder="Roll Number (last 3 digits)" minlength="3" maxlength="3">
+
+      <select class="form-control" id="department" name="department" required>
+        <option selected disabled>Department</option>
+        <option value="CIVIL">CIVIL</option>
+        <option value="CSE">CSE</option>
+        <option value="ECE">ECE</option>
+        <option value="EEE">EEE</option>
+        <option value="IT">IT</option>
+        <option value="MECH">MECH</option>
+      </select>
+
+      <input required type="text" id="year" name="year" maxlength="1" class="form-control" placeholder="Year">
     </div>
-    <div class="teacher box">
-      <input type="text" name="facultyid" class="form-control" placeholder="Faculty ID">
+
+    <div style="display: none;" id="teacher"  class="teacher">
+      <input required type="text" id="facultyid" name="facultyid" class="form-control" placeholder="Faculty ID">
     </div>
 
 

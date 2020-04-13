@@ -16,21 +16,7 @@
     }
 </style>
 
-<script>
-    $(document).ready(function () {
-        $("select").change(function () {
-            $(this).find("option:selected").each(function () {
-                var optionValue = $(this).attr("value");
-                if (optionValue) {
-                    $(".box").not("." + optionValue).hide();
-                    $("." + optionValue).show();
-                } else {
-                    $(".box").hide();
-                }
-            });
-        }).change();
-    });
-</script>
+<script src="../js/accountsettings.js"></script>
 
 <div class="container">
     <form class="form-signin" action="/adminaccountsettings" method="POST">
