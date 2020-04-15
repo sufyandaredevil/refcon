@@ -16,16 +16,19 @@
     
     .makesmaller{
         font-size:10px;
+        text-align: center;
+        vertical-align: middle;
     }
+
     input[type=number]::-webkit-inner-spin-button, 
     input[type=number]::-webkit-outer-spin-button { 
         -webkit-appearance: none; 
         }
 </style>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="../js/seatingorderspace.js"></script>
 
-<body onload="showNoOfStudentsAndInfo()">
+<body>
     <div class="container" style="margin-top: 30px;">
 
         <a style="margin-bottom: 20px;" href="/seatingorder" class="btn btn-outline-primary" role="button"><i class="fa fa-arrow-left"></i></a>
@@ -38,10 +41,10 @@
 
         <table class="makesmaller table table-bordered">
             <thead>
-              <th>Department</th>
-              <th>Year</th>
-              <th>No. of students unallocated</th>
-              <th>No. of students allocated</th>
+              <th style="vertical-align: middle; text-align: center;">Department</th>
+              <th style="vertical-align: middle; text-align: center;">Year</th>
+              <th style="vertical-align: middle; text-align: center;">No. of students unallocated</th>
+              <th style="vertical-align: middle; text-align: center;">No. of students allocated</th>
             </thead>
         
             <tbody>
@@ -49,7 +52,7 @@
               <tr>
                   <td> <%= data[i].department %> </td>
                   <td> <%= data[i].year %></td>
-                  <td> <%= data[i].unalloc.length %> </td>
+                  <td class="<%= data[i].department %> <%= data[i].year %>"> <%= data[i].unalloc.length %> </td>
                   <td> <%= data[i].alloc.length %> </td>
               </tr>
               <%}} %>
@@ -66,8 +69,8 @@
                 <div style="display: none;" id="info">
                     <li>Make sure of using the <font style="font-weight: bolder;">Reference table</font> present above to know which department and year are unallocated.</li>
                     <li>Seating alternation starts with Department, year 1 (i.e.) DEPT1, DEPT2, DEPT1,DEPT2,......</li>
-                    <li>If number of rows and columns are odd then Department 1's student count will be greater than Department 2's student count(assuming both department, year 1 & 2 unallocated count are the same)</li>
-                    <li>If students from a specific department and year are all allocated(if No. of students unallocated is 0) it won't be shown in the Reference table</li>
+                    <li>If Maximum allocation value is odd then Department 1's student count will be greater than Department 2's student count(assuming both department, year 1 & 2 unallocated count are the same)</li>
+                    <li>If students from a specific department and year are all allocated, (if No. of students unallocated is 0) it won't be shown in the Reference table</li>
                     <div class="alert alert-danger unclick">
                         <i class="fa fa-2x fa-exclamation" aria-hidden="true"></i> 
                         <li style="font-weight: bolder;">Allocation should be done in a manner where the number of remaining rows in the Reference table should not be an odd number, else the odd one won't have a pair to allocate seats with.</li>
@@ -75,7 +78,7 @@
                 </div>
             </div>
 
-            <label> Session: </label> &nbsp;
+            <label style="font-size: 15px; font-weight: bolder;"> Session: </label> &nbsp;
             <input checked type="radio" name="sessionIn" value="FN">
             <label>FN</label>
             <input type="radio" name="sessionIn" value="AN">
@@ -83,79 +86,127 @@
 
             <div></div>
 
-            <div id="dept" style="margin-top: 9px;"></div>
-            <label> Department 1: </label> &nbsp;
-            <input checked type="radio" onchange="showNoOfStudentsAndInfo()" name="department1" value="CSE">
+            <div style="display: none;" class="alert alert-danger" id="d1y1Danger">
+            </div>
+
+            <div id="dept"></div>
+            <label style="font-size: 15px; font-weight: bolder;"> Department 1: </label> &nbsp;
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="department1" value="CSE">
             <label>CSE</label>
-            <input type="radio" onchange="showNoOfStudentsAndInfo()" name="department1" value="IT">
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="department1" value="IT">
             <label>IT</label>
-            <input type="radio" onchange="showNoOfStudentsAndInfo()" name="department1" value="CIVIL">
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="department1" value="CIVIL">
             <label>CIVIL</label>
-            <input type="radio" onchange="showNoOfStudentsAndInfo()" name="department1" value="EEE">
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="department1" value="EEE">
             <label>EEE</label>
-            <input type="radio" onchange="showNoOfStudentsAndInfo()" name="department1" value="ECE">
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="department1" value="ECE">
             <label>ECE</label>
-            <input type="radio" onchange="showNoOfStudentsAndInfo()" name="department1" value="MECH">
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="department1" value="MECH">
             <label>MECH</label>
 
             <div></div>
 
-            <label> Year 1: </label> &nbsp;
-            <input type="radio" onchange="showNoOfStudentsAndInfo()" name="year1" value="1">
+            <label style="font-size: 15px; font-weight: bolder;"> Year 1: </label> &nbsp;
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="year1" value="1">
             <label> <font style="font-family: 'Times New Roman', Times, serif;">I</font> </label> &nbsp;
-            <input type="radio" onchange="showNoOfStudentsAndInfo()" name="year1" value="2">
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="year1" value="2">
             <label> <font style="font-family: 'Times New Roman', Times, serif;">II</font> </label>&nbsp;
-            <input checked type="radio" onchange="showNoOfStudentsAndInfo()" name="year1" value="3">
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="year1" value="3">
             <label> <font style="font-family: 'Times New Roman', Times, serif;">III</font> </label>&nbsp;
-            <input type="radio" onchange="showNoOfStudentsAndInfo()" name="year1" value="4">
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="year1" value="4">
             <label> <font style="font-family: 'Times New Roman', Times, serif;">IV</font> </label>&nbsp;
 
+            <div style="display: none;" class="alert alert-danger" id="d2y2Danger">
+            </div>
+
+            <div style="display: none;" class="alert alert-danger" id="dyDanger">
+            </div>
+
             <div style="margin-top: 9px;"></div>
-            <label> Department 2: </label> &nbsp;
-            <input type="radio" onchange="showNoOfStudentsAndInfo()" name="department2" value="CSE">
+
+            <label style="font-size: 15px; font-weight: bolder;"> Department 2: </label> &nbsp;
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="department2" value="CSE">
             <label>CSE</label>
-            <input type="radio" onchange="showNoOfStudentsAndInfo()" name="department2" value="IT">
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="department2" value="IT">
             <label>IT</label>
-            <input type="radio" onchange="showNoOfStudentsAndInfo()" name="department2" value="CIVIL">
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="department2" value="CIVIL">
             <label>CIVIL</label>
-            <input type="radio" onchange="showNoOfStudentsAndInfo()" name="department2" value="EEE">
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="department2" value="EEE">
             <label>EEE</label>
-            <input checked type="radio" onchange="showNoOfStudentsAndInfo()" name="department2" value="ECE">
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="department2" value="ECE">
             <label>ECE</label>
-            <input type="radio" onchange="showNoOfStudentsAndInfo()" name="department2" value="MECH">
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="department2" value="MECH">
             <label>MECH</label>
 
             <div></div>
 
-            <label> Year 2: </label> &nbsp;
-            <input type="radio" onchange="showNoOfStudentsAndInfo()" name="year2" value="1">
+            <label style="font-size: 15px; font-weight: bolder;"> Year 2: </label> &nbsp;
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="year2" value="1">
             <label> <font style="font-family: 'Times New Roman', Times, serif;">I</font> </label> &nbsp;
-            <input type="radio" onchange="showNoOfStudentsAndInfo()" name="year2" value="2">
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="year2" value="2">
             <label> <font style="font-family: 'Times New Roman', Times, serif;">II</font> </label>&nbsp;
-            <input checked type="radio" onchange="showNoOfStudentsAndInfo()" name="year2" value="3">
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="year2" value="3">
             <label> <font style="font-family: 'Times New Roman', Times, serif;">III</font> </label>&nbsp;
-            <input type="radio" onchange="showNoOfStudentsAndInfo()" name="year2" value="4">
+            <input type="radio" onchange="checkDY12();showNoOfStudentsAndInfo()" name="year2" value="4">
             <label> <font style="font-family: 'Times New Roman', Times, serif;">IV</font> </label>&nbsp;
             
             <div></div>
 
             <input class="form-control" required type="text" name="blockInfo" placeholder="Block (i.e.) Department, Floor, Hall Number">
 
-            <div style="margin-bottom: 5px;"></div>
+            <div style="margin-bottom: 5px; display: none" id="displayRowColumn">
 
-            <table>
-                <tr>
-                    <td style="float: left;"> <label for="noOfRows">Number of Rows & Columns:&nbsp;&nbsp;</label><input oninput="showNoOfStudentsAndInfo()" style="width: 35px;" required type="number" maxlength="3" id="noOfRows" name="noOfRows" value="5">&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;<input oninput="showNoOfStudentsAndInfo()" style="width: 35px;" required type="number" maxlength="3" id="noOfColumns" name="noOfColumns" value="5"> </td>
-                </tr>
-            </table>
+                <table style="margin-top: 10px;">
+                    <tr>
+                        <td style="font-size: 15px; float: left; padding-top: 10px;"> <label style="font-weight: bold;" for="noOfRows">Number of Rows & Columns:&nbsp;&nbsp;</label><input oninput="showNoOfStudentsAndInfo()" style="width: 35px;" required type="number" maxlength="3" id="noOfRows" name="noOfRows">&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;<input oninput="showNoOfStudentsAndInfo()" style="width: 35px;" required type="number" maxlength="3" id="noOfColumns" name="noOfColumns"> </td> 
+                        <td><div style="margin-left: 5px; display: none;" class="alert alert-danger" id="noOfStudentsInfoDanger">
+                        </div></td>
+                    </tr>
 
-            <div style="display: none;" class="alert alert-danger" id="noOfStudentsInfoDanger">
+                </table>
+
+                <div style="margin-top: 5px; display: none;" class="alert alert-info" id="noOfStudentsInfo">
+
+                    <h6 style="font-weight: bolder; margin-left: -15px;">Allocation Preview</h6>
+
+                    <table class="table table-bordered" style="margin-left: -15px; margin-bottom: 5px;">
+                        <tr class="makesmaller"> 
+                            <td title="Department, year 1 & 2 you've selected">Dept / Year</td>
+                            <td title="Max number of students who can be allocated in the Hall mentioned">Max Alloc.</th>
+                            <td title="Number of students currently present in Department, Year 1 & 2">Cur. Count</td>
+                            <td title="Number of seats currently occupied by Department, Year 1 & 2">Seats Occ.</td>
+                            <td title="Number of remaining students in Department, year 1 & 2 who'll be unallocated after this allocation">Rem. Unalloc.</td>
+                            <td title="Number of empty seats remaining">Emp. Count</td>
+                        </tr>
+                        <tr class="makesmaller">
+                            <td style="font-weight:bolder;"><span id="sd1"></span> / <span id="sy1"></span></td> 
+                            <td style="font-weight:bolder;"><span id="maxAllocD1"></span></td>
+                            <td style="font-weight:bolder;"><span id="curCountD1"></span></td>
+                            <td style="font-weight:bolder;"><span id="seatsOccupiedD1"></span></td>
+                            <td style="font-weight:bolder;"><span id="remUnallocD1"></span></td>
+                            <td style="font-weight: bolder; vertical-align: middle;" rowspan="3"><span id="emptySeatCount"></span></td>
+                        </tr>
+                        <tr class="makesmaller">
+                            <td style="font-weight:bolder;"><span id="sd2"></span> / <span id="sy2"></span></td> 
+                            <td style="font-weight:bolder;"><span id="maxAllocD2"></span></td>
+                            <td style="font-weight:bolder;"><span id="curCountD2"></span></td>
+                            <td style="font-weight:bolder;"><span id="seatsOccupiedD2"></span></td>
+                            <td style="font-weight:bolder;"><span id="remUnallocD2"></span></td>
+                        </tr>
+                        <tr class="makesmaller">
+                            <td>Total</td>
+                            <td style="font-weight:bolder;"><span id="maxAllocTotal"></span></td>
+                            <td style="font-weight:bolder;"><span id="curCountTotal"></span></td>
+                            <td style="font-weight:bolder;"><span id="seatsOccupiedTotal"></span></td>
+                            <td style="font-weight:bolder;"><span id="remUnallocTotal"></span></td>
+                        </tr>
+                    </table>
+
+                </div>
+
             </div>
 
-            <div style="display: none;" class="alert alert-info" id="noOfStudentsInfo">
-            </div>
-
-            <button style="margin-top: 7px;" id="createButton" class="btn btn-primary" type="submit"> Create </button>
+            <button style="margin-top: 7px; display: none" id="createButton" class="btn btn-primary" type="submit"> Create </button>
             <span id="forFocus"></span>
         </form>
 

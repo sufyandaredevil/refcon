@@ -33,10 +33,12 @@
 
     <a style="margin-left: 15px; margin-top: 20px;" href="/seatingorder" class="btn btn-outline-primary" role="button"><i class="fa fa-arrow-left"></i></a>
 
-    <form class="form-signin" action="/seatingorderfind" method="POST" style="margin-bottom: -20px;">
+    <h5 style="margin-left: 15px; margin-top: 15px;">Find Student's Seat</h5>
+
+    <form class="form-signin" action="/seatingorderfind" method="POST" style="margin-bottom: -20px; margin-top: -15px;">
 
         <div class="input-group mb-3">
-            <input name="rollNumber" value="<%=rollNumber%>" type="number" class="form-control" placeholder="Enter Student's Roll Number:" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <input name="rollNumber" value="<%=rollNumber%>" type="number" class="form-control" placeholder="Student's Roll Number" aria-label="Recipient's username" aria-describedby="basic-addon2">
             <div class="input-group-append">
               <button class="btn btn-primary" type="submit">Find</button>
             </div>

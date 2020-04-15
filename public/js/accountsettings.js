@@ -1,3 +1,5 @@
+//jshint esversion:10
+
 $(document).ready(function () {
     $("select").change(function () {
         $(this).find("option:selected").each(function () {

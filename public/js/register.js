@@ -1,3 +1,5 @@
+//jshint esversion:10
+
 function showParFields() {
 
     const sel = document.getElementById('type').value;
