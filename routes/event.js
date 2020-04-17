@@ -108,13 +108,13 @@ module.exports = (app, RefconStudent, RefconEvent) => {
                     }
 
                     RefconStudent.findOne({rollNumber: rollNumber}, (err, result) => {
-                        if(result){
+                        if(result){console.log(tid);
                             fullName = result.fullName;
                             department = result.department;
                             year = result.year;
                             res.render('eventverify', {tid: tid, found: "true", fullName: fullName, department: department, year: year, rollNumber: rollNumber, eventName: eventName });
                         }
-                        else{
+                        else{console.log(tid+"anerror");
                             res.render('eventverify', {tid: tid, found: "false", fullName: fullName, department: department, year: year, rollNumber: rollNumber, eventName: eventName });
                         }
                         found = 0;
