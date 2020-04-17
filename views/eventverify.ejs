@@ -12,9 +12,10 @@
     }
 </style>
 
+<script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 <script>
 
-function qrClick(){
+async function qrClick(){
 
     Instascan.Camera.getCameras().then(function (cameras) {
         scanner.start(cameras[1]); //starts rear camera(index 0 for front)
@@ -72,7 +73,6 @@ function qrClick(){
                         <h6 style="font-weight: bolder;" class="modal-title">Scan the Event ID's QR code</h6>
                     </div>
                     <div class="modal-body">
-                        <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
                         <div id="preview">
                             <video id="preview" style="display: none; border-style: solid;"></video>
                         </div>
