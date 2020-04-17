@@ -95,6 +95,7 @@ module.exports = (app, RefconStudent, RefconEvent) => {
                 var department = "";
                 var year = "";
                 var tid = "";
+                console.log(req.body.tokenId);
 
                 RefconEvent.find({}, (err, data) => {
                     for( var i=0 ; i<data.length ; i++){
