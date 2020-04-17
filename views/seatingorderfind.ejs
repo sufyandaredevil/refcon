@@ -38,9 +38,9 @@
     <form class="form-signin" action="/seatingorderfind" method="POST" style="margin-bottom: -20px; margin-top: -15px;">
 
         <div class="input-group mb-3">
-            <input name="rollNumber" value="<%=rollNumber%>" type="number" class="form-control" placeholder="Student's Roll Number" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <input required name="rollNumber" value="<%=rollNumber%>" type="number" class="form-control" placeholder="Student's Roll Number" aria-label="Recipient's username" aria-describedby="basic-addon2">
             <div class="input-group-append">
-              <button class="btn btn-primary" type="submit">Find</button>
+              <button title="Find Student's seat" class="btn btn-primary" type="submit"><i class="fa fa-lg fa-search"></i></button>
             </div>
           </div>
     </form>
@@ -111,7 +111,7 @@
 
         <% } else if(found === 'false'){%>
             <form action="" class="form-signin" >
-                <div class="alert alert-danger"><font style="font-weight: bolder;"><%= rollNumber %></font> hasn't been allocated!</div>
+                <div class="alert alert-danger"><font style="font-weight: bolder;"><%= rollNumber %></font>Student wouldn't have registered / hasn't been allocated!</div>
             <div></div>
             </form>
             <% } %>

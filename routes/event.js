@@ -94,10 +94,12 @@ module.exports = (app, RefconStudent, RefconEvent) => {
                 var fullName = "";
                 var department = "";
                 var year = "";
+                var tid = "";
 
                 RefconEvent.find({}, (err, data) => {
                     for( var i=0 ; i<data.length ; i++){
                         if(data[i].tokenId.indexOf(req.body.tokenId.toUpperCase()) !=-1){
+                            tid = req.body.tokenId.toUpperCase();
                             eventName = data[i].eventName;
                             rollNumber = data[i].rollNumbers[data[i].tokenId.indexOf(req.body.tokenId.toUpperCase())];
                             found=1;
@@ -110,10 +112,10 @@ module.exports = (app, RefconStudent, RefconEvent) => {
                             fullName = result.fullName;
                             department = result.department;
                             year = result.year;
-                            res.render('eventverify', {found: "true", fullName: fullName, department: department, year: year, rollNumber: rollNumber, eventName: eventName });
+                            res.render('eventverify', {tid: tid, found: "true", fullName: fullName, department: department, year: year, rollNumber: rollNumber, eventName: eventName });
                         }
                         else{
-                            res.render('eventverify', {found: "false", fullName: fullName, department: department, year: year, rollNumber: rollNumber, eventName: eventName });
+                            res.render('eventverify', {tid: tid, found: "false", fullName: fullName, department: department, year: year, rollNumber: rollNumber, eventName: eventName });
                         }
                         found = 0;
                     });
