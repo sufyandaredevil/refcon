@@ -95,7 +95,6 @@ module.exports = (app, RefconStudent, RefconEvent) => {
                 var department = "";
                 var year = "";
                 var tid = "";
-                console.log(req.body.tokenId);
 
                 RefconEvent.find({}, (err, data) => {
                     for( var i=0 ; i<data.length ; i++){
@@ -109,14 +108,14 @@ module.exports = (app, RefconStudent, RefconEvent) => {
                     }
 
                     RefconStudent.findOne({rollNumber: rollNumber}, (err, result) => {
-                        if(result){console.log(tid);
+                        if(result){
                             fullName = result.fullName;
                             department = result.department;
                             year = result.year;
                             res.render('eventverify', {tid: tid, found: "true", fullName: fullName, department: department, year: year, rollNumber: rollNumber, eventName: eventName });
                         }
-                        else{console.log(tid+"anerror");
-                            res.render('eventverify', {tid: tid, found: "false", fullName: fullName, department: department, year: year, rollNumber: rollNumber, eventName: eventName });
+                        else{
+                            res.render('eventverify', {found: "false", tid: req.body.tokenId.toUpperCase()});
                         }
                         found = 0;
                     });

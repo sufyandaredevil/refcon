@@ -37,7 +37,7 @@ function qrClick(){
 
     scanner.addListener('scan', function (content) {
 
-        document.getElementById('tokenId').value = content;
+        document.getElementById('tokenId').value = content.toUpperCase().substring(0, 5);
         document.getElementById('eventVerify').submit();
 
     });
@@ -103,7 +103,7 @@ function qrClick(){
             </div>
         </div>
         <% } else if(found === 'false'){%>
-        <div style="margin-top: 10px;" class="alert alert-danger">No Event ID matched!</div>
+        <div style="margin-top: 10px;" class="alert alert-danger">ID <font style="font-weight: bolder;">'<%= tid %>'</font> not found!</div>
         <div></div>
         <% } %>
 

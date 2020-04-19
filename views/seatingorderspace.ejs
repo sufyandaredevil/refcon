@@ -41,19 +41,19 @@
 
         <table class="makesmaller table table-bordered">
             <thead>
-              <th style="vertical-align: middle; text-align: center;">Department</th>
-              <th style="vertical-align: middle; text-align: center;">Year</th>
-              <th style="vertical-align: middle; text-align: center;">No. of students unallocated</th>
-              <th style="vertical-align: middle; text-align: center;">No. of students allocated</th>
+              <td style="vertical-align: middle; text-align: center;">Department</td>
+              <td style="vertical-align: middle; text-align: center;">Year</td>
+              <td style="vertical-align: middle; text-align: center;">No. of students unallocated</td>
+              <td style="vertical-align: middle; text-align: center;">No. of students allocated</td>
             </thead>
         
             <tbody>
             <% for(var i=0; i<data.length; i++){ if(data[i].unalloc.length != 0){ %>
               <tr>
-                  <td> <%= data[i].department %> </td>
-                  <td> <%= data[i].year %></td>
-                  <td class="<%= data[i].department %> <%= data[i].year %>"> <%= data[i].unalloc.length %> </td>
-                  <td> <%= data[i].alloc.length %> </td>
+                  <td style="font-weight: bolder;"> <%= data[i].department %> </td>
+                  <td style="font-weight: bolder;"> <%= data[i].year %></td>
+                  <td style="font-weight: bolder;" class="<%= data[i].department %> <%= data[i].year %>"> <%= data[i].unalloc.length %> </td>
+                  <td style="font-weight: bolder;"> <%= data[i].alloc.length %> </td>
               </tr>
               <%}} %>
             </tbody>
