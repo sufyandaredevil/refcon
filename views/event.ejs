@@ -15,11 +15,10 @@
     <% if(type === 'teacher'){%>
     <div class="container">
       <div class="text-right">
-        <a href="/eventspace" style="margin-top: 10px; font-size: large; color: white;" class="btn btn-primary">Post
-          New Event</a>
           <% if(data.length != 0) {%>
-          <a href="/eventverify" style="margin-top: 10px; font-size: large; color: white;" class="btn btn-primary">Verify Event IDs</a>
+          <a title="Verify Event IDs" href="/eventverify" style="margin-top: 10px; font-size: large; color: white;" class="btn btn-primary"><i class="fa fa-lg fa-check"></i></a>
           <% } %>
+          <a title="Post New Event" href="/eventspace" style="margin-top: 10px; font-size: large; color: white;" class="btn btn-primary"><i class="fa fa-lg fa-plus"></i></a>
       </div>
     </div>
     <% } %>
