@@ -17,22 +17,12 @@ module.exports = (app, RefconStudent, RefconInternalMark) => {
 
             RefconInternalMark.find({$and: [{department: req.session.user.department}, {year: req.session.user.year}]}, (err, data) =>{
                 if(data){
-                    for(var i=0; i<data.length; i++){
-                        if(!(internalNumbers.includes(data[i].internalNumber))){
-                            internalNumbers.push(data[i].internalNumber);
-                        }
-                        for(var j=0; j<data[i].rollNumbers.length; j++){
-                            if(data[i].rollNumbers[j] === req.session.user.rollNumber){
-                                data[i].marks = data[i].marks[j];
-                                break;
-                            }
-                        }
-                        marks.push({mark: data[i].marks[0], subjectName: data[i].subjectName, subjectCode: data[i].subjectCode, internalNumber: data[i].internalNumber});
-                    }
-                    res.render('internalmark', { type: req.session.user.type, data: marks, internalNumbers: internalNumbers });
+
+                    res.render('internalmark', { type: req.session.user.type, data: data, rollNumber: req.session.user.rollNumber });
+
                 }
                 else{
-                    res.render('internalmark', { type: req.session.user.type, data: "", internalNumbers: "" });
+                    res.render('internalmark', { type: req.session.user.type, data: [], rollNumber: req.session.user.rollNumber });
                 }
             });
         }

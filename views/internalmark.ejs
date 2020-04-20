@@ -8,6 +8,9 @@
     font{
         color: #e92843;
     }
+    td, thead, th{
+        text-align: center;
+    }
 </style>
 
 <div class="container">
@@ -23,10 +26,10 @@
     <% for(var i=(data.length-1); i >= 0; i--){ %>
     <div title="Department: <%= data[i].department %>&#010;Year: <%= data[i].year %>&#010;Semester: <%= data[i].semester %>&#010;Subject : <%= data[i].subjectName %>&#010;Internal: <%= data[i].internalNumber %>" class="alert alert-info">
         <div style="font-weight: bold;"><font><%= data[i].department %></font> <font><%= data[i].year %></font> year, Semester
-            <font><%= data[i].semester %></font>, <font><%= data[i].subjectName %></font> Internal No. <font><%= data[i].internalNumber %></font> Marks: <a
+            <font><%= data[i].semester %></font>, <font><%= data[i].subjectName %></font> Internal No. <font><%= data[i].internalNumber %></font> Marks <a
                 class="btn btn-outline-danger" style="margin-bottom: 5px;" href="/internaldelete/<%= data[i]._id %>" role="button">Delete</a></div>
 
-        <table style="margin: auto; max-width: 100%;" class="table table-bordered table-hover">
+        <table style="margin: auto; max-width: 100%;" class="table table-bordered table-hover table-sm">
             <thead>
                 <tr>
                     <th>Roll Number</th>
@@ -49,39 +52,50 @@
     <% } %>
     <% } else if(type ==='student'){ %>
 
-    <% for(var i=internalNumbers.length-1; i >= 0; i--){ %>
-<div class="alert alert-info" style="margin-top: 15px;" >
-        <div style="font-weight: bold;">Internal No. <%= data[i].internalNumber %> Marks:</div>
+        <% var intNumbers = []; for(i=data.length-1; i >= 0; i--){ if((!intNumbers.includes(data[i].internalNumber)) && (data[i].marks.length != 0) ){ intNumbers.push(data[i].internalNumber); } } %>
 
-    <table style="margin: auto; max-width: 100%;" class="table table-bordered table-hover">
-        <thead>
-            <th>Subject Code</th>
-            <th>Subject Name</th>
-            <th>Marks Obtained</th>
-        </thead>
+        <!-- The line commented below is not needed as the marks will be uploaded in an ordered manner, so no use of sorting -->
+         <!-- intNumbers = intNumbers.map(Number).sort(function(a, b){return b-a;}).map(String);  -->
 
-        <% for(var j=0; j < data.length; j++){ if(data[j].internalNumber === internalNumbers[i]){%>
+        <% var c = 0; for(let i = intNumbers.length-1; i >= 0; i--) { %>
 
-        <tr>
-            <td><%= data[j].subjectCode %></td>
-            <td><%= data[j].subjectName %></td>
-            <td><%= data[j].mark %></td>
-        </tr>
+            <div class="alert alert-info" style="margin-top: 15px;" >
+                <div>Internal No. <span style="font-weight: bolder;"> <%= intNumbers[c] %> </span> Marks</div>
 
-        <% }} %>
+                <table style="margin: auto; max-width: 100%;" class="table table-bordered table-hover">
+                    <thead>
+                        <th>Subject Code</th>
+                        <th>Subject Name</th>
+                        <th>Marks Obtained</th>
+                    </thead>
 
-    </table>
-</div>
+                <% for(let j = data.length-1; j >= 0; j--){ if(data[j].internalNumber === intNumbers[c] ){%>
+            
+                    <% if(data[j].rollNumbers.indexOf(rollNumber) != -1) { %>
+
+                        <tr>
+                            <td>  <%= data[j].subjectCode %> </td>
+                            <td> <%= data[j].subjectName %> </td>
+                            <td> <%= data[j].marks[data[j].rollNumbers.indexOf(rollNumber)] %> </td>
+                        </tr>
+
+                    <% } %>
+            
+
+                <% } } %>
+
+            </table>
+
+            </div>
+
+        <% c++; } %>
+
     <% } %>
-
-    <% } %>
-
 
     <% } else if(type === 'teacher'){ %>
 
     <div class="text-right">
-        <a href="/internalmarkspace" style="margin-bottom: 10px; margin-top: 10px; font-size: large; color: white;" class="btn btn-primary">Create
-            Mark Space</a>
+        <a title="Create Mark Space" href="/internalmarkspace" style="margin-bottom: 10px; margin-top: 10px; font-size: large; color: white;" class="btn btn-primary"><i class="fa fa-lg fa-plus"></i></a>
     </div>
 
     <div class="alert alert-info">

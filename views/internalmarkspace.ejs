@@ -4,6 +4,15 @@
     REFCON - New Message
 </title>
 
+<style>
+
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none;
+        }
+
+</style>
+
 <body>
     <div class="container" style="margin-top: 30px;">
 
@@ -42,8 +51,8 @@
             <input type="radio" name="year" value="4">
             <label> <font style="font-family: 'Times New Roman', Times, serif;">IV</font> </label>&nbsp;
             
-            <input class="form-control" maxlength="1" required type="text" name="semester" placeholder="Semester Number">
-            <input class="form-control" maxlength="1" required type="text" name="internalNumber" placeholder="Internal Number">
+            <input class="form-control" maxlength="1" required type="number" min="1" max="8" name="semester" placeholder="Semester Number">
+            <input class="form-control" maxlength="1" required type="number" min="1" max="3" name="internalNumber" placeholder="Internal Number">
             <input class="form-control" required type="text" name="subjectCode" placeholder="Subject Code">
             <input class="form-control" required type="text" name="subjectName" placeholder="Subject Name">
             <button style="margin-top: 7px;" class="btn btn-primary" type="submit" name="button"> Create </button>
