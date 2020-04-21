@@ -6,7 +6,7 @@ module.exports = (app,md5, RefconStudent, RefconTeacher) => {
             res.render('login', {typerror: "You haven't logged in or your're session might have ended", success: ""});
         }
         else{
-            res.render('accountsettings',{ typerror: "" , success: ""});
+            res.render('accountsettings',{ typerror: "" , success: "", info: req.session.user });
         }
     });
     
@@ -15,10 +15,10 @@ module.exports = (app,md5, RefconStudent, RefconTeacher) => {
             res.render('login', {typerror: "You haven't logged in or your're session might have ended", success: ""});
         }
         else if(req.body.type === 'none'){
-            res.render('accountsettings', { typerror: "Please select a valid option" , success: ""});
+            res.render('accountsettings', { typerror: "Please select a valid option" , success: "", info: req.session.user});
         }
         else if(((req.body.type === 'name') && (req.body.fullName === "")) || ((req.body.type === 'password') && ((req.body.currentPassword === "") && (req.body.newPassword === ""))) || ((req.body.type === 'phoneNumber') && (req.body.phoneNumber === ""))){
-            res.render('accountsettings', { typerror: "You didn't enter the data!" , success: ""});
+            res.render('accountsettings', { typerror: "You didn't enter the data!" , success: "", info: req.session.user});
         }
         else{
             if(req.session.user.type === 'student'){
@@ -31,24 +31,24 @@ module.exports = (app,md5, RefconStudent, RefconTeacher) => {
                             data.fullName = req.body.fullName;
                             data.save();
                             req.session.user.fullName = data.fullName;
-                            res.render('accountsettings', { typerror: "" , success: "Name changed successfully!"});
+                            res.render('accountsettings', { typerror: "" , success: "Name changed successfully!", info: req.session.user});
                         }
                         else if(req.body.type === 'password'){
                             if(data.password === md5(req.body.currentPassword)){
                                 data.password = md5(req.body.newPassword);
                                 data.save();
                                 req.session.user.password = data.password;
-                                res.render('accountsettings', { typerror: "" , success: "Password changed successfully!"});
+                                res.render('accountsettings', { typerror: "" , success: "Password changed successfully!", info: req.session.user});
                             }
                             else{
-                                res.render('accountsettings', { typerror: "You entered the wrong password!" , success: ""});
+                                res.render('accountsettings', { typerror: "You entered the wrong password!" , success: "", info: req.session.user});
                             }
                         }
                         else if(req.body.type === 'phoneNumber'){
                             data.phoneNumber = req.body.phoneNumber;
                             data.save();
                             req.session.user.phoneNumber = data.phoneNumber;
-                            res.render('accountsettings', { typerror: "" , success: "Phone Number changed successfully!"});
+                            res.render('accountsettings', { typerror: "" , success: "Phone Number changed successfully!", info: req.session.user});
                         }
                     }
                 });
@@ -63,24 +63,24 @@ module.exports = (app,md5, RefconStudent, RefconTeacher) => {
                             data.fullName = req.body.fullName;
                             data.save();
                             req.session.user.fullName = data.fullName;
-                            res.render('accountsettings', { typerror: "" , success: "Name changed successfully!"});
+                            res.render('accountsettings', { typerror: "" , success: "Name changed successfully!", info: req.session.user});
                         }
                         else if(req.body.type === 'password'){
                             if(data.password === md5(req.body.currentPassword)){
                                 data.password = md5(req.body.newPassword);
                                 data.save();
                                 req.session.user.password = data.password;
-                                res.render('accountsettings', { typerror: "" , success: "Password changed successfully!"});
+                                res.render('accountsettings', { typerror: "" , success: "Password changed successfully!", info: req.session.user});
                             }
                             else{
-                                res.render('accountsettings', { typerror: "You entered the wrong password!" , success: ""});
+                                res.render('accountsettings', { typerror: "You entered the wrong password!" , success: "", info: req.session.user});
                             }
                         }
                         else if(req.body.type === 'phoneNumber'){
                             data.phoneNumber = req.body.phoneNumber;
                             data.save();
                             req.session.user.phoneNumber = data.phoneNumber;
-                            res.render('accountsettings', { typerror: "" , success: "Phone Number changed successfully!"});
+                            res.render('accountsettings', { typerror: "" , success: "Phone Number changed successfully!", info: req.session.user});
                         }
                     }
                 });

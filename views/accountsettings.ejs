@@ -14,6 +14,14 @@
         max-width: 450px;
         padding: 15px;
     }
+
+    .unclick {
+        user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
+    }
 </style>
 
 <script src="../js/accountsettings.js"></script>
@@ -22,33 +30,78 @@
     <form class="form-signin" action="/accountsettings" method="POST">
 
         <%if(typerror != "") {%>
-        <div class="alert alert-danger"><%= typerror %></div>
+        <div style="font-weight: bolder;" class="alert alert-danger"><%= typerror %></div>
         <%}%>
             <%if(success != "") {%>
-        <div class="alert alert-success"><%= success %></div>
-        <%}%>                    
+        <div style="font-weight: bolder;" class="alert alert-success"><%= success %></div>
+        <%}%>
 
-        <select class="form-control" name="type" required>
-            <option value="none">Which field you want to change?</option>
-            <option value="name">Change my Name</option>
-            <option value="password">Change my Password</option>
-            <option value="phoneNumber">Change my Phone Number</option>
-        </select>
+        <div class="unclick alert alert-info">
+            <h4>Your Info:</h4>
 
-        <div class="name box">
-            <input type="text" name="fullName" class="form-control" placeholder="Enter your Full Name">
+            <% if(info.type === 'teacher'){ %>
+
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <td> Faculty Name </td>
+                    <td style="font-weight: bolder;"> <%=info.fullName%> </td>
+                </tr>
+                <tr>
+                    <td> Faculty ID </td>
+                    <td style="font-weight: bolder;"> <%=info.facultyid%> </td>
+                </tr>
+                <tr>
+                    <td> Account Type </td>
+                    <td style="font-weight: bolder;"> <%=info.type.toUpperCase()%> </td>
+                </tr>
+            </table>
+
+            <% }else if(info.type === 'student'){ %>
+
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <td> Student Name </td>
+                    <td style="font-weight: bolder;"> <%=info.fullName%> </td>
+                </tr>
+                <tr>
+                    <td> Registration ID </td>
+                    <td style="font-weight: bolder;"> <%=info.rollNumber%> </td>
+                </tr>
+                <tr>
+                    <td>Dept / Year</td>
+                    <td style="font-weight: bolder;"> <%=info.department%> <span style="font-weight: normal;">/</span> <%=info.year%> </td>
+                </tr>
+                <tr>
+                    <td> Account Type </td>
+                    <td style="font-weight: bolder;"> <%=info.type.toUpperCase()%> </td>
+                </tr>
+            </table>
+
+            <% } %>
+
         </div>
 
-        <div class="phoneNumber box">
-            <input type="text" name="phoneNumber" class="form-control" placeholder="Enter your Phone Number">
-        </div>
+<select class="form-control" name="type" required>
+    <option value="none">Which field you want to change?</option>
+    <option value="name">Change my Name</option>
+    <option value="password">Change my Password</option>
+    <option value="phoneNumber">Change my Phone Number</option>
+</select>
 
-        <div class="password box">
-            <input type="password" name="currentPassword" class="form-control" placeholder="Enter your Current Password">
-            <input type="password" name="newPassword" class="form-control" placeholder="Enter your New Password">
-        </div>
+<div class="name box">
+    <input type="text" name="fullName" class="form-control" placeholder="Enter your Full Name">
+</div>
 
-        <button type="submit" style="margin-top: 10px;" class="btn btn-lg btn-primary btn-block">Submit</button>
+<div class="phoneNumber box">
+    <input type="text" name="phoneNumber" class="form-control" placeholder="Enter your Phone Number">
+</div>
 
-    </form>
+<div class="password box">
+    <input type="password" name="currentPassword" class="form-control" placeholder="Enter your Current Password">
+    <input type="password" name="newPassword" class="form-control" placeholder="Enter your New Password">
+</div>
+
+<button type="submit" style="margin-top: 10px;" class="btn btn-lg btn-primary btn-block">Submit</button>
+
+</form>
 </div>
