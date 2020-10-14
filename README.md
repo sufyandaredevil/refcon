@@ -36,7 +36,7 @@ TECHNOLOGIES INVOLVED:
 
         Fontawesome(icons)
 
-        nexmo(forward sms)
+        nexmo(sms forwarding)
 
         paystack(payment)
 
