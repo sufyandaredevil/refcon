@@ -40,6 +40,6 @@ TECHNOLOGIES INVOLVED:
 
         paystack(payment)
 
-        InstaScan(QR code scanner - author: https://github.com/schmich/instascan)
+        InstaScan(QR code scanner - author: https://github.com/schmich)
 
 ________________________________________________________________________________
